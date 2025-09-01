@@ -22,7 +22,7 @@ const Navbar = () => {
 
     return (
         <nav className="bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-            <div className="max-w-xl mx-auto px-4 py-4">
+            <div className=" mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
                     <Link href="/" className="text-2xl font-bold  bg-clip-text text-black hover:scale-105 transition-transform duration-200">
                         FinFeed
