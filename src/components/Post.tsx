@@ -7,6 +7,9 @@ import PostVideo from './PostVideo';
 import PostArticle from './PostArticle';
 import PostActions from './PostActions';
 import PostContent from './PostContent';
+import AISummaryPanel from './AISummaryPanel';
+import AILoadingState from './AILoadingState';
+import { useAISummary } from '../hooks/useAISummary';
 
 interface PostProps {
     post: PostType;
@@ -14,6 +17,15 @@ interface PostProps {
 
 const Post = ({ post }: PostProps) => {
     const [showTooltip, setShowTooltip] = useState<number | null>(null);
+    const {
+        showAISummary,
+        aiSummary,
+        isGenerating,
+        handleAIButtonClick,
+        closeAISummary
+    } = useAISummary();
+
+    const onAIClick = () => handleAIButtonClick(post);
 
     return (
         <div className="bg-white border border-gray-100 rounded-lg shadow-md hover:shadow-md transition-shadow duration-300">
@@ -47,7 +59,26 @@ const Post = ({ post }: PostProps) => {
 
             <div className="p-4">
                 {/* Only show action buttons for non-short videos */}
-                {post.type !== "short_video" && <PostActions likes={post.likes} />}
+                {post.type !== "short_video" && (
+                    <PostActions
+                        likes={post.likes}
+                        onAIClick={onAIClick}
+                        isGeneratingAI={isGenerating}
+                        showingAI={showAISummary}
+                    />
+                )}
+
+                {/* AI Summary Section */}
+                {showAISummary && aiSummary && (
+                    <AISummaryPanel
+                        aiSummary={aiSummary}
+                        onClose={closeAISummary}
+                    />
+                )}
+
+                {/* Loading State */}
+                {isGenerating && <AILoadingState />}
+
                 <PostContent
                     caption={post.caption}
                     likes={post.likes}
