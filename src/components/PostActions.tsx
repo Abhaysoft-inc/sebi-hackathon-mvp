@@ -23,11 +23,11 @@ const PostActions = ({ likes, onAIClick, isGeneratingAI = false, showingAI = fal
                 onClick={onAIClick}
                 disabled={isGeneratingAI}
             >
-                <LuSparkles className={`w-6 h-6 transition-colors duration-200 ${showingAI
-                        ? 'text-purple-600'
-                        : isGeneratingAI
-                            ? 'text-purple-400'
-                            : 'text-gray-600 group-hover:text-purple-500'
+                <LuSparkles className={`cursor-pointer w-6 h-6 transition-colors duration-200 ${showingAI
+                    ? 'text-purple-600'
+                    : isGeneratingAI
+                        ? 'text-purple-400'
+                        : 'text-gray-600 group-hover:text-purple-500'
                     }`} />
                 {isGeneratingAI && (
                     <div className="absolute -top-1 -right-1 w-3 h-3">

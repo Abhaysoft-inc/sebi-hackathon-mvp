@@ -23,7 +23,7 @@ const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelPr
                         className="text-white hover:text-gray-200 transition-colors"
                         aria-label="Close AI Analysis"
                     >
-                        <X className="h-5 w-5" />
+                        <X className="h-5 w-5 cursor-pointer" />
                     </button>
                 </div>
             </div>

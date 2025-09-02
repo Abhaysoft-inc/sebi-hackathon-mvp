@@ -52,9 +52,7 @@ const Post = ({ post }: PostProps) => {
             )}
 
             {post.type === "article" && (
-                <div className="px-4 pt-2">
-                    <PostArticle post={post} />
-                </div>
+                <PostArticle post={post} />
             )}
 
             <div className="p-4">
@@ -79,12 +77,26 @@ const Post = ({ post }: PostProps) => {
                 {/* Loading State */}
                 {isGenerating && <AILoadingState />}
 
-                <PostContent
-                    caption={post.caption}
-                    likes={post.likes}
-                    comments={post.comments}
-                    user={post.user}
-                />
+                {/* Show caption and engagement for articles */}
+                {post.type === "article" && (
+                    <div className="mt-3">
+                        <div className="text-sm text-gray-900 mb-3 leading-relaxed">
+                            <span className="font-semibold">{post.user.name}</span>{' '}
+                            <span className="text-gray-700">{post.caption}</span>
+                        </div>
+                        <div className="text-sm font-semibold text-gray-900">{post.likes.toLocaleString()} likes</div>
+                    </div>
+                )}
+
+                {/* Only show PostContent for non-article posts */}
+                {post.type !== "article" && (
+                    <PostContent
+                        caption={post.caption}
+                        likes={post.likes}
+                        comments={post.comments}
+                        user={post.user}
+                    />
+                )}
             </div>
         </div>
     );
