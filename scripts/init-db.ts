@@ -33,6 +33,8 @@ async function initializeDatabase() {
       CREATE TABLE IF NOT EXISTS "CaseStudy" (
         "id" SERIAL PRIMARY KEY,
         "title" TEXT NOT NULL,
+        "refinedTitle" TEXT,
+        "slug" VARCHAR UNIQUE,
         "narrative" TEXT NOT NULL,
         "challengeQuestion" TEXT NOT NULL,
         "options" JSONB,

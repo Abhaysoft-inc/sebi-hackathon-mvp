@@ -71,10 +71,11 @@ async function getCaseStudy(identifier: string): Promise<PublicCase | null> {
   return null
 }
 
-interface PageProps { params: { caseId: string } }
+interface PageProps { params: Promise<{ caseId: string }> }
 
 export default async function CasePage({ params }: PageProps) {
-  const caseStudy = await getCaseStudy(params.caseId)
+  const { caseId } = await params
+  const caseStudy = await getCaseStudy(caseId)
   if (!caseStudy) {
     return (
       <div className="max-w-3xl mx-auto py-20">
