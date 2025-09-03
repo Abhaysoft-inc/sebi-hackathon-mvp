@@ -1,0 +1,91 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CaseStudy {
+  id                 Int      @id @default(autoincrement())
+  title              String
+  refinedTitle       String?  @db.Text
+  slug               String?  @unique
+  narrative          String   @db.Text // legacy full narrative (kept for compatibility)
+  challengeQuestion  String   @db.Text // legacy single-question prompt
+  options            Json?    // legacy single-question options array
+  correctOptionIndex Int?     // legacy correct index
+  explanation        String   @db.Text // legacy explanation
+  createdAt          DateTime @default(now())
+  progress           UserProgress[]
+  // New extended metadata
+  companyName        String?  @db.Text
+  ticker             String?  @db.VarChar(12)
+  periodStart        DateTime?
+  periodEnd          DateTime?
+  shortSummary       String?  @db.Text
+  fullNarrative      String?  @db.Text
+  sources            Json?    // [{type: 'wikipedia'|'news'|'finance', url, title, snippet}]
+  status             CaseStatus @default(DRAFT)
+  quizQuestions      QuizQuestion[]
+  generationLogs     CaseGenerationLog[]
+}
+
+model UserProgress {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  caseStudyId Int
+  completed   Boolean  @default(false)
+  score       Int      @default(0)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  caseStudy   CaseStudy @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, caseStudyId])
+}
+
+model QuizQuestion {
+  id              Int        @id @default(autoincrement())
+  caseStudyId     Int
+  caseStudy       CaseStudy  @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+  order           Int        @default(0)
+  prompt          String     @db.Text
+  options         Json       // ["A", "B", ...]
+  correctOptionIndex Int
+  explanation     String     @db.Text
+  category        String?    @db.VarChar(40)
+  difficulty      String?    @db.VarChar(20)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model CaseGenerationLog {
+  id            Int        @id @default(autoincrement())
+  caseStudyId   Int?
+  caseStudy     CaseStudy? @relation(fields: [caseStudyId], references: [id], onDelete: SetNull)
+  phase         String     // e.g. 'aggregate', 'llm-draft', 'quiz-generation'
+  inputPayload  Json?
+  outputPayload Json?
+  error         String?    @db.Text
+  createdAt     DateTime   @default(now())
+}
+
+enum CaseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// Next-Auth Models
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String?       @unique
+  emailVerified DateTime?
+  image         String?
+  progress      UserProgress[]
+  totalScore    Int           @default(0)
+}

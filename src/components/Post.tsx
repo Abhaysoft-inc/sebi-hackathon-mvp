@@ -28,7 +28,7 @@ const Post = ({ post }: PostProps) => {
     const onAIClick = () => handleAIButtonClick(post);
 
     return (
-        <div className="bg-white border border-gray-100 rounded-lg shadow-md hover:shadow-md transition-shadow duration-300">
+        <div className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden animate-fade-in">
             <PostHeader
                 user={post.user}
                 postId={post.id}
@@ -97,6 +97,36 @@ const Post = ({ post }: PostProps) => {
                         user={post.user}
                     />
                 )}
+            </div>
+            
+            <div className="px-4 pb-3 pt-0 flex flex-wrap gap-2">
+                {post.type === "article" && (
+                    <span className="badge badge-blue">
+                        Article
+                    </span>
+                )}
+                {post.type === "image" && (
+                    <span className="badge badge-green">
+                        Financial News
+                    </span>
+                )}
+                {post.type === "short_video" && (
+                    <span className="badge badge-purple bg-purple-100 text-purple-800">
+                        Short Video
+                    </span>
+                )}
+                {post.type === "long_video" && (
+                    <span className="badge badge-red">
+                        Full Video
+                    </span>
+                )}
+                {post.caption && post.caption.includes('#') && 
+                    post.caption.split(' ').filter(word => word.startsWith('#')).slice(0, 2).map((tag, i) => (
+                        <span key={i} className="badge badge-yellow">
+                            {tag}
+                        </span>
+                    ))
+                }
             </div>
         </div>
     );
