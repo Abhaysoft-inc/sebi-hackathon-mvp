@@ -1,4 +1,9 @@
 import { Pool } from 'pg';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+// Load environment variables from the parent directory's .env file
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -8,17 +13,22 @@ const pool = new Pool({
 async function initializeDatabase() {
   try {
     console.log('Connecting to database...');
-    
-    // Create tables
+
+    // Create enum for case status if not exists
     await pool.query(`
-      -- Create enum for case status if not exists
       DO $$
       BEGIN
-        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'casestatus') THEN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'CaseStatus') THEN
           CREATE TYPE "CaseStatus" AS ENUM ('DRAFT','PUBLISHED','ARCHIVED');
         END IF;
+      EXCEPTION WHEN duplicate_object THEN
+        -- Type already exists, continue
+        NULL;
       END$$;
+    `);
 
+    // Create tables
+    await pool.query(`
       -- CaseStudy table
       CREATE TABLE IF NOT EXISTS "CaseStudy" (
         "id" SERIAL PRIMARY KEY,
@@ -83,16 +93,20 @@ async function initializeDatabase() {
       );
     `);
 
-    // Trigger to auto-update updatedAt (idempotent creation)
+    // Create function for trigger
+    await pool.query(`
+      CREATE OR REPLACE FUNCTION set_quizquestion_updated_at() RETURNS trigger AS $$
+      BEGIN
+        NEW."updatedAt" = NOW();
+        RETURN NEW;
+      END; $$ LANGUAGE plpgsql;
+    `);
+
+    // Create trigger if it doesn't exist
     await pool.query(`
       DO $$
       BEGIN
         IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'quizquestion_updated_at') THEN
-          CREATE OR REPLACE FUNCTION set_quizquestion_updated_at() RETURNS trigger AS $$
-          BEGIN
-            NEW."updatedAt" = NOW();
-            RETURN NEW;
-          END; $$ LANGUAGE plpgsql;
           CREATE TRIGGER quizquestion_updated_at BEFORE UPDATE ON "QuizQuestion" FOR EACH ROW EXECUTE PROCEDURE set_quizquestion_updated_at();
         END IF;
       END$$;
@@ -153,7 +167,7 @@ async function initializeDatabase() {
       );
     `);
 
-  console.log('Tables created / verified successfully!');
+    console.log('Tables created / verified successfully!');
 
     // Insert sample case studies
     const caseStudies = [
