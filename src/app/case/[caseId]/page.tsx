@@ -1,10 +1,14 @@
-import { Pool } from 'pg'
+import { prisma } from '@/lib/prisma'
 import CaseStudyDetail from '@/components/CaseStudyDetail'
 import Link from 'next/link'
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+interface PublicCaseQuestion {
+  prompt: string
+  options: string[]
+  correctOptionIndex: number
+  explanation: string
+}
 
-interface PublicCaseQuestion { prompt: string; options: string[]; correctOptionIndex: number; explanation: string }
 interface PublicCase {
   id: number
   title: string
@@ -18,35 +22,67 @@ interface PublicCase {
 }
 
 async function getCaseStudy(identifier: string): Promise<PublicCase | null> {
-  // Determine if numeric id or slug
-  const idNum = Number(identifier)
-  const isNumeric = !Number.isNaN(idNum)
   try {
-    const whereClause = isNumeric ? 'id = $1' : 'slug = $1'
-    const res = await pool.query(
-      `SELECT id, title, "refinedTitle", slug, narrative, "fullNarrative", "challengeQuestion", options, "correctOptionIndex", explanation FROM "CaseStudy" WHERE ${whereClause} AND status = 'PUBLISHED' LIMIT 1`,
-      [identifier]
-    )
-    if (res.rows.length === 0) return null
-    const row = res.rows[0]
+    // Determine if numeric id or slug
+    const idNum = Number(identifier)
+    const isNumeric = !Number.isNaN(idNum)
+
+    // Query using Prisma
+    const caseStudy = await prisma.caseStudy.findFirst({
+      where: isNumeric
+        ? { id: idNum }
+        : { slug: identifier },
+      select: {
+        id: true,
+        title: true,
+        refinedTitle: true,
+        slug: true,
+        narrative: true,
+        fullNarrative: true,
+        challengeQuestion: true,
+        options: true,
+        correctOptionIndex: true,
+        explanation: true,
+        status: true,
+        quizQuestions: {
+          select: {
+            prompt: true,
+            options: true,
+            correctOptionIndex: true,
+            explanation: true,
+            order: true
+          },
+          orderBy: { order: 'asc' }
+        }
+      }
+    })
+
+    if (!caseStudy) return null
+
     // Prefer refinedTitle then title
-    const title = row.refinedTitle || row.title
-    const narrative: string = row.fullNarrative || row.narrative || ''
+    const title = caseStudy.refinedTitle || caseStudy.title
+    const narrative: string = caseStudy.fullNarrative || caseStudy.narrative || ''
+
     let options: string[] = []
-    if (Array.isArray(row.options)) options = row.options
-    else if (row.options && typeof row.options === 'object') options = Object.values(row.options)
-    // If legacy single-question fields are empty, pull first quiz question
-    // Fetch all quiz questions
-    const quizRes = await pool.query(`SELECT prompt, options, "correctOptionIndex", explanation FROM "QuizQuestion" WHERE "caseStudyId" = $1 ORDER BY "order" ASC`, [row.id])
-    const quiz: PublicCaseQuestion[] = quizRes.rows.map(r => ({
-      prompt: r.prompt,
-      options: Array.isArray(r.options) ? r.options : (typeof r.options === 'object' ? Object.values(r.options) : []),
-      correctOptionIndex: r.correctOptionIndex,
-      explanation: r.explanation
+    if (Array.isArray(caseStudy.options)) {
+      options = caseStudy.options as string[]
+    } else if (caseStudy.options && typeof caseStudy.options === 'object') {
+      options = Object.values(caseStudy.options as object) as string[]
+    }
+
+    // Process quiz questions
+    const quiz: PublicCaseQuestion[] = caseStudy.quizQuestions.map(q => ({
+      prompt: q.prompt,
+      options: Array.isArray(q.options)
+        ? q.options as string[]
+        : (typeof q.options === 'object' ? Object.values(q.options as object) as string[] : []),
+      correctOptionIndex: q.correctOptionIndex || 0,
+      explanation: q.explanation || ''
     })).filter(q => q.options.length === 4)
-    let challengeQuestion = row.challengeQuestion
-    let correctOptionIndex = row.correctOptionIndex
-    let explanation = row.explanation
+
+    let challengeQuestion = caseStudy.challengeQuestion
+    let correctOptionIndex = caseStudy.correctOptionIndex
+    let explanation = caseStudy.explanation
     let legacyOptions = options
     if (quiz.length) {
       // Use first quiz question for legacy-compatible surface while exposing full quiz array
@@ -55,8 +91,9 @@ async function getCaseStudy(identifier: string): Promise<PublicCase | null> {
       correctOptionIndex = quiz[0].correctOptionIndex
       explanation = quiz[0].explanation
     }
+
     return {
-      id: row.id,
+      id: caseStudy.id,
       title,
       narrative,
       challengeQuestion: challengeQuestion || 'Answer the question below.',
@@ -65,10 +102,10 @@ async function getCaseStudy(identifier: string): Promise<PublicCase | null> {
       explanation: explanation || '',
       quiz
     }
-  } catch (e) {
-    // swallow for now; could log
+  } catch (error) {
+    console.error('Error fetching case study:', error)
+    return null
   }
-  return null
 }
 
 interface PageProps { params: Promise<{ caseId: string }> }

@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { Pool } from "pg"
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+import { prisma } from "@/lib/prisma"
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,41 +13,45 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      // Get the case study details
-      const caseResult = await pool.query(
-        'SELECT * FROM CaseStudy WHERE id = $1',
-        [caseStudyId]
-      );
+      // Get the case study details using Prisma
+      const caseStudy = await prisma.caseStudy.findUnique({
+        where: { id: parseInt(caseStudyId) },
+        select: {
+          id: true,
+          correctOptionIndex: true,
+          explanation: true,
+          options: true
+        }
+      })
 
-      if (caseResult.rows.length === 0) {
+      if (!caseStudy) {
         return NextResponse.json(
           { error: "Case study not found" },
           { status: 404 }
         )
       }
 
-      const caseStudy = caseResult.rows[0];
-      const isCorrect = answerIndex === caseStudy.correctoptionindex
+      const isCorrect = answerIndex === caseStudy.correctOptionIndex
       const pointsEarned = isCorrect ? 10 : 0
 
-      // For demonstration purposes, we'll return success without database operations
-      // In a real implementation, you'd check user progress and update scores here
-
-      const options = Array.isArray(caseStudy.options) ? caseStudy.options : Object.values(caseStudy.options) as string[];
+      // Process options array properly
+      const options = Array.isArray(caseStudy.options)
+        ? caseStudy.options as string[]
+        : Object.values(caseStudy.options as object) as string[]
 
       return NextResponse.json({
         isCorrect,
         explanation: caseStudy.explanation,
         pointsEarned,
         correctAnswer: {
-          index: caseStudy.correctoptionindex,
-          text: options[caseStudy.correctoptionindex]
+          index: caseStudy.correctOptionIndex,
+          text: options[caseStudy.correctOptionIndex || 0]
         }
       })
     } catch (dbError) {
       console.error('Database error:', dbError);
-      
-      // Fallback for demo purposes
+
+      // Fallback for demo purposes if database query fails
       const mockCases: Record<string, any> = {
         '1': {
           correctOptionIndex: 0,
