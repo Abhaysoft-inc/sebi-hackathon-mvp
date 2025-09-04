@@ -1,0 +1,1 @@
+export default function ExpandableText(props: { summary: string; full: string }): JSX.Element
