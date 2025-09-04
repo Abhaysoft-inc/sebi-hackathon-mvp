@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import CaseLibrary from '@/components/CaseLibrary'
+import BottomBar from '@/components/BottomBar'
 
 interface CaseStudyData {
   id: number
@@ -61,11 +62,15 @@ async function getCaseStudies(): Promise<CaseStudyData[]> {
 export default async function CasesPage() {
   const caseStudies = await getCaseStudies()
 
+  // Filter to only show cases with questions (questionCount > 0)
+  const casesWithQuestions = caseStudies.filter(caseStudy => caseStudy.questionCount > 0)
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <CaseLibrary caseStudies={caseStudies} />
+        <CaseLibrary caseStudies={casesWithQuestions} />
       </div>
+      <BottomBar />
     </div>
   )
 }
