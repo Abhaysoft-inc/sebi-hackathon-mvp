@@ -10,9 +10,9 @@ interface AISummaryPanelProps {
 
 const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelProps) => {
     return (
-        <div className={`mt-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200 overflow-hidden ${className} mb-5`}>
+        <div className={`mt-6 bg-gradient-to-r from-white to-gray-50 rounded-lg border border-purple-200 overflow-hidden ${className} mb-5`}>
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-600 text-white px-4 py-3">
+            <div className=" bg-blue-400 text-white px-4 py-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                         <Sparkles className="h-5 w-5" />
@@ -36,9 +36,9 @@ const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelPr
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSentimentColor(aiSummary.sentiment)}`}>
                             {aiSummary.sentiment}
                         </span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskColor(aiSummary.riskLevel)}`}>
+                        {/* <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskColor(aiSummary.riskLevel)}`}>
                             {aiSummary.riskLevel} Risk
-                        </span>
+                        </span> */}
                     </div>
                 </div>
 

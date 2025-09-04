@@ -1,4 +1,4 @@
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { AiOutlineSearch, AiOutlineUser } from 'react-icons/ai';
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
@@ -24,6 +24,13 @@ const BottomBar = () => {
                         <AiOutlineSearch className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors duration-200" />
                     </div>
                     <span className="text-xs mt-1 text-gray-600 group-hover:text-blue-600 transition-colors duration-200 font-medium">Cases</span>
+                </Link>
+
+                <Link href="/circulars" className="flex flex-col items-center py-3 px-4 rounded-xl transition-all duration-200 hover:bg-blue-50 active:scale-95 group">
+                    <div className="relative">
+                        <FileText className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors duration-200" />
+                    </div>
+                    <span className="text-xs mt-1 text-gray-600 group-hover:text-blue-600 transition-colors duration-200 font-medium">Circulars</span>
                 </Link>
 
                 <Link href="/quiz/ranked" className="flex flex-col items-center py-3 px-4 rounded-xl transition-all duration-200 hover:bg-blue-50 active:scale-95 group">

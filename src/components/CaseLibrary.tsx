@@ -61,87 +61,54 @@ export default function CaseLibrary({ caseStudies }: CaseLibraryProps) {
             {/* Header */}
             <header className="text-center space-y-4">
                 <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Case Library</h1>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                <p className="text-md text-gray-600 max-w-3xl mx-auto">
                     Investigative scenarios and structured analytical exercises. Each case includes a narrative and quiz prompts to test detection and reasoning skills.
                 </p>
             </header>
 
-            {/* Search and Filter Controls */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                <div className="flex flex-col lg:flex-row gap-4 items-center">
-                    {/* Search Bar */}
-                    <div className="relative flex-1 max-w-md">
-                        <input
-                            type="text"
-                            placeholder="Search cases..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full rounded-lg border border-gray-300 px-4 py-3 pl-11 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        />
-                        <svg className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-                        </svg>
-                    </div>
+            {/* Search and Filter Controls - Minimal Design */}
+            <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
+                {/* Search Bar */}
+                <div className="relative flex-1 max-w-sm">
+                    <input
+                        type="text"
+                        placeholder="Search cases..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 pl-9 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
+                    />
+                    <svg className="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                    </svg>
+                </div>
 
-                    {/* Sort Options */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-gray-700">Sort:</span>
-                        <button
-                            onClick={() => setSortBy('newest')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${sortBy === 'newest'
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
-                        >
-                            Newest
-                        </button>
-                        <button
-                            onClick={() => setSortBy('oldest')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${sortBy === 'oldest'
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
-                        >
-                            Oldest
-                        </button>
-                    </div>
+                {/* Filters - Compact */}
+                <div className="flex items-center gap-2">
+                    {/* Sort Dropdown */}
+                    <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value as SortOption)}
+                        className="text-sm border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                    >
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
 
-                    {/* Filter Options */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-gray-700">Filter:</span>
-                        <button
-                            onClick={() => setFilterBy('all')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filterBy === 'all'
-                                ? 'bg-green-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
-                        >
-                            All
-                        </button>
-                        <button
-                            onClick={() => setFilterBy('fraud')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filterBy === 'fraud'
-                                ? 'bg-red-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
-                        >
-                            Fraud
-                        </button>
-                        <button
-                            onClick={() => setFilterBy('market')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filterBy === 'market'
-                                ? 'bg-purple-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
-                        >
-                            Market
-                        </button>
-                    </div>
+                    {/* Filter Dropdown */}
+                    <select
+                        value={filterBy}
+                        onChange={(e) => setFilterBy(e.target.value as FilterOption)}
+                        className="text-sm border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                    >
+                        <option value="all">All Categories</option>
+                        <option value="fraud">Fraud Cases</option>
+                        <option value="market">Market Cases</option>
+                    </select>
 
-                    {/* Results Count */}
-                    <div className="text-sm text-gray-500">
-                        {filteredAndSortedCases.length} of {caseStudies.length} cases
-                    </div>
+                    {/* Results Count - Compact */}
+                    <span className="text-xs text-gray-500 ml-2">
+                        {filteredAndSortedCases.length}/{caseStudies.length}
+                    </span>
                 </div>
             </div>
 

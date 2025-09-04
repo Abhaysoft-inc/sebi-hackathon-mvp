@@ -36,34 +36,56 @@ const QuizCard: React.FC<{ quiz: Quiz; onRegister: (quizId: string) => void }> =
     };
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'upcoming': return 'bg-blue-100 text-blue-800 border-blue-200';
-            case 'ongoing': return 'bg-green-100 text-green-800 border-green-200';
-            case 'completed': return 'bg-gray-100 text-gray-800 border-gray-200';
-            default: return 'bg-gray-100 text-gray-800 border-gray-200';
+            case 'upcoming': return 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-sm';
+            case 'ongoing': return 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm animate-pulse';
+            case 'completed': return 'bg-gradient-to-r from-gray-400 to-gray-500 text-white shadow-sm';
+            default: return 'bg-gradient-to-r from-gray-400 to-gray-500 text-white shadow-sm';
         }
     };
 
     const getDifficultyColor = (difficulty: string) => {
         switch (difficulty) {
-            case 'Beginner': return 'bg-green-100 text-green-700';
-            case 'Intermediate': return 'bg-yellow-100 text-yellow-700';
-            case 'Advanced': return 'bg-red-100 text-red-700';
-            default: return 'bg-gray-100 text-gray-700';
+            case 'Beginner': return 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-white shadow-sm';
+            case 'Intermediate': return 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-sm';
+            case 'Advanced': return 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-sm';
+            default: return 'bg-gradient-to-r from-gray-400 to-gray-500 text-white shadow-sm';
+        }
+    };
+
+    const getStatusIcon = (status: string) => {
+        switch (status) {
+            case 'upcoming': return <Clock className="w-3 h-3 mr-1" />;
+            case 'ongoing': return <Play className="w-3 h-3 mr-1" />;
+            case 'completed': return <Check className="w-3 h-3 mr-1" />;
+            default: return null;
+        }
+    };
+
+    const getDifficultyIcon = (difficulty: string) => {
+        switch (difficulty) {
+            case 'Beginner': return <TrendingUp className="w-3 h-3 mr-1" />;
+            case 'Intermediate': return <Star className="w-3 h-3 mr-1" />;
+            case 'Advanced': return <AlertCircle className="w-3 h-3 mr-1" />;
+            default: return null;
         }
     };
 
     return (
         <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow">
             <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(quiz.status)}`}>
+                <div className="flex items-center space-x-3">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center ${getStatusColor(quiz.status)}`}>
+                        {getStatusIcon(quiz.status)}
                         {quiz.status.charAt(0).toUpperCase() + quiz.status.slice(1)}
                     </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(quiz.difficulty)}`}>
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center ${getDifficultyColor(quiz.difficulty)}`}>
+                        {getDifficultyIcon(quiz.difficulty)}
                         {quiz.difficulty}
                     </span>
                 </div>
-                <Trophy className="w-5 h-5 text-yellow-500" />
+                <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 p-2 rounded-full shadow-sm">
+                    <Trophy className="w-4 h-4 text-white" />
+                </div>
             </div>
 
             <h3 className="text-lg font-semibold text-gray-900 mb-2">{quiz.title}</h3>
@@ -89,10 +111,10 @@ const QuizCard: React.FC<{ quiz: Quiz; onRegister: (quizId: string) => void }> =
             </div>
 
             <div className="mb-4">
-                <p className="text-xs text-gray-500 mb-1">Topics:</p>
-                <div className="flex flex-wrap gap-1">
+                <p className="text-xs text-gray-500 mb-2 font-medium">Topics:</p>
+                <div className="flex flex-wrap gap-2">
                     {quiz.topics.map((topic, index) => (
-                        <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+                        <span key={index} className="px-3 py-1 bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 border border-indigo-200 rounded-full text-xs font-medium hover:from-indigo-100 hover:to-purple-100 transition-colors">
                             {topic}
                         </span>
                     ))}

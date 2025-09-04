@@ -12,7 +12,8 @@ import {
     Settings,
     X,
     LogOut,
-    User
+    User,
+    FileText
 } from 'lucide-react'; interface NavItem {
     href: string;
     label: string;
@@ -32,6 +33,7 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
         { href: '/cases', label: 'Case Studies', icon: <BookOpen className="w-5 h-5" /> },
         { href: '/quiz/ranked', label: 'Quizzes', icon: <Trophy className="w-5 h-5" /> },
         { href: '/leaderboard', label: 'Leaderboard', icon: <BarChart3 className="w-5 h-5" /> },
+        { href: '/circulars', label: 'SEBI Circulars', icon: <FileText className="w-5 h-5" /> },
         { href: '/case-studies', label: 'Study Materials', icon: <Users className="w-5 h-5" /> },
     ];
 
