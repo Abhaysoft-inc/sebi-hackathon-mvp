@@ -1,10 +1,21 @@
 'use client';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import { Menu } from 'lucide-react';
+import { useDrawer } from './LayoutWrapper';
 
 const Navbar = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Try to get drawer context, fallback to null if not available
+    let setDrawerOpen: ((open: boolean) => void) | null = null;
+    try {
+        const drawerContext = useDrawer();
+        setDrawerOpen = drawerContext.setDrawerOpen;
+    } catch {
+        // Context not available on excluded pages
+    }
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -24,9 +35,22 @@ const Navbar = () => {
         <nav className="bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
             <div className=" mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
-                    <Link href="/" className="text-2xl font-bold  bg-clip-text text-black hover:scale-105 transition-transform duration-200">
-                        FinFeed
-                    </Link>
+                    <div className="flex items-center space-x-3">
+                        {/* Hamburger Menu Button - only show if drawer context is available */}
+                        {setDrawerOpen && (
+                            <button
+                                onClick={() => setDrawerOpen(true)}
+                                className="p-2 rounded-lg hover:bg-gray-100 transition-colors md:hidden"
+                                aria-label="Open navigation menu"
+                            >
+                                <Menu className="w-5 h-5 text-gray-600" />
+                            </button>
+                        )}
+
+                        <Link href="/" className="text-2xl font-bold bg-clip-text text-black hover:scale-105 transition-transform duration-200">
+                            FinFeed
+                        </Link>
+                    </div>
                     <div className="flex items-center gap-6">
                         <div className="relative" ref={dropdownRef}>
                             <div
