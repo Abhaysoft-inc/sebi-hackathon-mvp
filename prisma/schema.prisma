@@ -120,3 +120,57 @@ enum CaseStatus {
   PUBLISHED
   ARCHIVED
 }
+
+// ================= IPO MODELS =================
+model IPO {
+  id               Int             @id @default(autoincrement())
+  companyName      String          @unique
+  logoUrl          String
+  issueOpenDate    DateTime
+  issueCloseDate   DateTime
+  priceBandLower   Float
+  priceBandUpper   Float
+  lotSize          Int
+  aboutCompany     String          @db.Text
+  financialsJson   Json?
+  strengths        String[]        @db.Text
+  risks            String[]        @db.Text
+  opinions         ExpertOpinion[]
+  createdAt        DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime        @default(now()) @updatedAt @db.Timestamp(6)
+  // Extended detailed sections (all optional JSON blocks)
+  statsJson              Json?    // core labelled key/value stats
+  reservationJson        Json?    // share reservation breakdown
+  anchorDetailsJson      Json?    // anchor investors data
+  timelineJson           Json?    // important dates
+  lotSizeJson            Json?    // lot size tiers / applications
+  financialsTableJson    Json?    // multi-period financial statement table
+  kpiJson                Json?    // key performance indicators
+  objectsOfIssueJson     Json?    // objects of the issue list
+  subscriptionStatusJson Json?    // live subscription status snapshot
+}
+
+model ExpertOpinion {
+  id                 Int        @id @default(autoincrement())
+  ipoId              Int
+  expertName         String
+  expertImage        String?
+  expertType         ExpertType
+  registrationNumber String
+  stance             Stance
+  summary            String      @db.Text
+  fullQuote          String      @db.Text
+  ipo                IPO         @relation(fields: [ipoId], references: [id], onDelete: Cascade)
+  createdAt          DateTime    @default(now()) @db.Timestamp(6)
+}
+
+enum ExpertType {
+  BROKER
+  INFLUENCER
+}
+
+enum Stance {
+  APPLY
+  AVOID
+  NEUTRAL_APPLY_FOR_LISTING_GAINS
+}
