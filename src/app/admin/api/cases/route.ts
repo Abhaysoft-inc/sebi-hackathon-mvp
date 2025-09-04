@@ -45,21 +45,21 @@ export async function POST(req: Request) {
         }
         caseStudy = {
           id: g.__inMemoryCaseSeq++,
-            title: seedTitle || normalizedCompany,
-            narrative: shortSummary,
-            challengeQuestion: 'Pending generation',
-            explanation: 'Pending generation',
-            options: [],
-            correctOptionIndex: 0,
-            createdAt: new Date(),
-            companyName: normalizedCompany,
-            ticker: ticker || null,
-            periodStart: periodStart ? new Date(periodStart) : null,
-            periodEnd: periodEnd ? new Date(periodEnd) : null,
-            shortSummary,
-            fullNarrative: null,
-            sources: null,
-            status: 'DRAFT'
+          title: seedTitle || normalizedCompany,
+          narrative: shortSummary,
+          challengeQuestion: 'Pending generation',
+          explanation: 'Pending generation',
+          options: [],
+          correctOptionIndex: 0,
+          createdAt: new Date(),
+          companyName: normalizedCompany,
+          ticker: ticker || null,
+          periodStart: periodStart ? new Date(periodStart) : null,
+          periodEnd: periodEnd ? new Date(periodEnd) : null,
+          shortSummary,
+          fullNarrative: null,
+          sources: null,
+          status: 'DRAFT'
         }
         g.__inMemoryCases.push(caseStudy)
         return NextResponse.json({ ok: true, caseStudy, storage: 'in-memory', warning: 'Database unreachable (P1001). Persisting only in memory until DB connectivity is restored.' }, { status: 202 })

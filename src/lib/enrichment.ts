@@ -34,18 +34,18 @@ export async function fetchWikipedia(companyName: string): Promise<SourceItem | 
     if (!html) return null
     // Convert HTML to plaintext (preserve headings)
     let text = html
-      .replace(/<script[\s\S]*?<\/script>/gi,' ')
-      .replace(/<style[\s\S]*?<\/style>/gi,' ')
-      .replace(/<table[\s\S]*?<\/table>/gi,' ')
-      .replace(/<sup[\s\S]*?<\/sup>/gi,' ')
-      .replace(/<span class="mw-editsection"[\s\S]*?<\/span>/gi,' ')
-      .replace(/<\/?(p|br|hr)>/gi,'\n')
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<table[\s\S]*?<\/table>/gi, ' ')
+      .replace(/<sup[\s\S]*?<\/sup>/gi, ' ')
+      .replace(/<span class="mw-editsection"[\s\S]*?<\/span>/gi, ' ')
+      .replace(/<\/?(p|br|hr)>/gi, '\n')
       .replace(/<h([1-6])[^>]*>(.*?)<\/h\1>/gi, '\n\n$2\n')
       .replace(/<li>(.*?)<\/li>/gi, '- $1\n')
-      .replace(/<[^>]+>/g,' ')
-      .replace(/&nbsp;/g,' ')
-      .replace(/\s+/g,' ')
-      .replace(/\n{2,}/g,'\n\n')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\s+/g, ' ')
+      .replace(/\n{2,}/g, '\n\n')
       .trim()
     const cap = Number(process.env.WIKIPEDIA_MAX_CHARS || 20000)
     const trimmedFull = text.slice(0, cap)
@@ -67,7 +67,7 @@ interface GuardianOptions {
   years?: number[]
 }
 
-async function guardianSingleQuery(rawQuery: string, key: string, requiredTokens?: string[], maxSnippet=1200, maxBody=8000, strict=true) {
+async function guardianSingleQuery(rawQuery: string, key: string, requiredTokens?: string[], maxSnippet = 1200, maxBody = 8000, strict = true) {
   try {
     const url = new URL('https://content.guardianapis.com/search')
     url.searchParams.set('api-key', key)
@@ -78,16 +78,16 @@ async function guardianSingleQuery(rawQuery: string, key: string, requiredTokens
     if (!res.ok) return []
     const data = await res.json() as any
     const results = data.response?.results || []
-    const loweredTokens = (requiredTokens||[]).map(t=>t.toLowerCase())
+    const loweredTokens = (requiredTokens || []).map(t => t.toLowerCase())
     return results.map((r: any) => {
       const body: string | undefined = r.fields?.bodyText
       const trimmedBody = body?.trim()
       const truncatedBody = trimmedBody ? trimmedBody.slice(0, maxBody) : undefined
       const snippet = truncatedBody ? truncatedBody.slice(0, maxSnippet) : r.webTitle
-      const hay = (r.webTitle + ' ' + (truncatedBody||'')).toLowerCase()
-      const tokenHits = loweredTokens.filter(t=> hay.includes(t)).length
+      const hay = (r.webTitle + ' ' + (truncatedBody || '')).toLowerCase()
+      const tokenHits = loweredTokens.filter(t => hay.includes(t)).length
       const allTokens = loweredTokens.length > 0 && tokenHits === loweredTokens.length
-      const score = tokenHits * 10 + (allTokens ? 5 : 0) + Math.min((truncatedBody||'').length/500, 5)
+      const score = tokenHits * 10 + (allTokens ? 5 : 0) + Math.min((truncatedBody || '').length / 500, 5)
       return {
         type: 'news',
         provider: 'guardian',
@@ -106,7 +106,7 @@ async function guardianSingleQuery(rawQuery: string, key: string, requiredTokens
           rawQuery
         }
       } as SourceItem
-  }).filter((item: any) => {
+    }).filter((item: any) => {
       if (!strict || loweredTokens.length === 0) return true
       // Require all tokens for specificity
       return (item as any).extra?.allTokens
@@ -186,7 +186,129 @@ export async function fetchFinance(ticker: string): Promise<SourceItem | null> {
 
 export interface EnrichmentResult {
   sources: SourceItem[]
-  stats: { wikipedia: number; news: number; finance: number; guardian?: number; currents?: number } & Record<string, any>
+  stats: { wikipedia: number; news: number; finance: number; guardian?: number; currents?: number; gemini?: number } & Record<string, any>
+}
+
+// Gemini-powered source enhancement when initial enrichment fails
+async function enhanceWithGemini(context: FetchContext, existingSources: SourceItem[]): Promise<SourceItem[]> {
+  const apiKey = process.env.GEMINI_API_KEY
+  if (!apiKey) return []
+
+  const { companyName, ticker, shortSummary } = context
+  const sourceCount = existingSources.length
+
+  try {
+    // Build a comprehensive prompt to get Gemini to suggest sources and provide additional context
+    const prompt = `You are a financial research assistant. I need to find comprehensive information about a financial case study.
+
+Company: ${companyName || 'Unknown'}
+Ticker: ${ticker || 'Unknown'}
+Summary: ${shortSummary || 'No summary provided'}
+
+Current sources found: ${sourceCount}
+${existingSources.map(s => `- ${s.provider}: ${s.title || 'Untitled'}`).join('\n')}
+
+The current enrichment process found limited sources. Please help by:
+
+1. Providing key facts about this company/case if it involves financial fraud, scams, or regulatory issues
+2. Suggesting specific search terms that would help find more relevant sources
+3. Providing any timeline or key events related to this case
+4. Mentioning any regulatory bodies, documents, or reports that would be relevant
+
+Please respond in this JSON format:
+{
+  "keyFacts": "Brief factual summary of the case/company",
+  "searchTerms": ["term1", "term2", "term3"],
+  "timeline": "Key dates and events if known",
+  "regulatoryContext": "Relevant regulatory information",
+  "additionalContext": "Any other relevant information"
+}
+
+Focus on factual, verifiable information. If this is a well-known financial case, provide accurate details.`
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`
+    const body = { contents: [{ parts: [{ text: prompt }] }] }
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+
+    if (!res.ok) {
+      console.warn('[Gemini] HTTP error:', res.status)
+      return []
+    }
+
+    const data = await res.json()
+    const text: string = data?.candidates?.[0]?.content?.parts?.map((p: any) => p.text || '').join('\n') || ''
+
+    if (!text) return []
+
+    // Try to extract JSON from response
+    let geminiData: any
+    try {
+      // Try direct JSON parse first
+      geminiData = JSON.parse(text.trim())
+    } catch {
+      // Extract JSON from markdown code blocks or find JSON object
+      const jsonMatch = text.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/) || text.match(/(\{[\s\S]*?\})/)
+      if (jsonMatch) {
+        try {
+          geminiData = JSON.parse(jsonMatch[1])
+        } catch {
+          console.warn('[Gemini] Failed to parse extracted JSON')
+          return []
+        }
+      } else {
+        console.warn('[Gemini] No JSON found in response')
+        return []
+      }
+    }
+
+    // Create enriched sources from Gemini data
+    const geminiSources: SourceItem[] = []
+
+    if (geminiData.keyFacts) {
+      geminiSources.push({
+        type: 'wikipedia',
+        provider: 'gemini',
+        title: `${companyName} - AI Research Summary`,
+        snippet: geminiData.keyFacts.slice(0, 1200),
+        extra: {
+          full: geminiData.keyFacts,
+          aiGenerated: true,
+          searchTerms: geminiData.searchTerms || [],
+          timeline: geminiData.timeline || '',
+          regulatoryContext: geminiData.regulatoryContext || '',
+          additionalContext: geminiData.additionalContext || ''
+        }
+      })
+    }
+
+    // If we have search terms, try to fetch additional sources with those terms
+    if (geminiData.searchTerms && Array.isArray(geminiData.searchTerms)) {
+      const hasGuardian = !!process.env.GUARDIAN_API_KEY
+      if (hasGuardian) {
+        for (const term of geminiData.searchTerms.slice(0, 2)) { // Limit to 2 additional searches
+          try {
+            const additionalSources = await fetchGuardian(term, {
+              requiredTokens: [companyName || ''].filter(Boolean)
+            })
+            geminiSources.push(...additionalSources.slice(0, 2)) // Limit results per term
+          } catch (error) {
+            console.warn('[Gemini] Error fetching additional Guardian sources:', error)
+          }
+        }
+      }
+    }
+
+    return geminiSources
+
+  } catch (error) {
+    console.warn('[Gemini] Error enhancing sources:', error)
+    return []
+  }
 }
 
 export async function enrichCase(context: FetchContext): Promise<EnrichmentResult> {
@@ -230,7 +352,7 @@ export async function enrichCase(context: FetchContext): Promise<EnrichmentResul
       start: context.periodStart ? context.periodStart.toISOString() : undefined,
       end: context.periodEnd ? context.periodEnd.toISOString() : undefined
     }
-    tasks.push(fetchCurrents(companyName, { requiredTokens, ...(dateRange.start||dateRange.end ? { dateRange } : {}) } as any))
+    tasks.push(fetchCurrents(companyName, { requiredTokens, ...(dateRange.start || dateRange.end ? { dateRange } : {}) } as any))
   }
 
   // Finance only if a non-empty ticker explicitly provided
@@ -257,8 +379,30 @@ export async function enrichCase(context: FetchContext): Promise<EnrichmentResul
     deduped.push(src)
   }
 
+  // Check if we need Gemini enhancement (if we have few sources or no news sources)
+  const newsCount = deduped.filter(s => s.type === 'news').length
+  const totalCount = deduped.length
+  const needsEnhancement = totalCount < 3 || newsCount === 0
+
+  let geminiSources: SourceItem[] = []
+  if (needsEnhancement && process.env.GEMINI_API_KEY) {
+    console.log(`[Enrichment] Sources found: ${totalCount}, news: ${newsCount}. Enhancing with Gemini...`)
+    geminiSources = await enhanceWithGemini(context, deduped)
+
+    // Add Gemini sources while avoiding duplicates
+    for (const geminiSource of geminiSources) {
+      const key = (geminiSource.url || '') + '|' + (geminiSource.title || '')
+      if (!seen.has(key)) {
+        seen.add(key)
+        deduped.push(geminiSource)
+      }
+    }
+  }
+
   const guardianCount = deduped.filter(s => s.provider === 'guardian').length
   const currentsCount = deduped.filter(s => s.provider === 'currents').length
+  const geminiCount = deduped.filter(s => s.provider === 'gemini').length
+
   return {
     sources: deduped,
     stats: {
@@ -266,11 +410,14 @@ export async function enrichCase(context: FetchContext): Promise<EnrichmentResul
       news: deduped.filter(s => s.type === 'news').length,
       guardian: guardianCount,
       currents: currentsCount,
+      gemini: geminiCount,
       finance: deduped.filter(s => s.type === 'finance').length,
       _guardianKey: process.env.GUARDIAN_API_KEY ? 1 : 0,
       _currentsKey: process.env.CURRENTS_API_KEY ? 1 : 0,
+      _geminiKey: process.env.GEMINI_API_KEY ? 1 : 0,
       _queriesTried: Array.from(newsQueries).length,
-      _requiredTokens: requiredTokens
+      _requiredTokens: requiredTokens,
+      _geminiEnhanced: geminiSources.length > 0
     }
   }
 }
@@ -319,17 +466,17 @@ async function fetchCurrents(topic: string, opts?: CurrentsOptions): Promise<Sou
   }
   let url = buildUrl(primaryQuery)
   try {
-  const res = await fetch(url.toString(), { headers: { Authorization: apiKey } })
+    const res = await fetch(url.toString(), { headers: { Authorization: apiKey } })
     if (!res.ok) return []
     const data = await res.json() as any
     const news: any[] = data.news || []
-    const required = (opts?.requiredTokens || []).map(t=>t.toLowerCase())
+    const required = (opts?.requiredTokens || []).map(t => t.toLowerCase())
     const strict = (process.env.CURRENTS_STRICT_FILTER || '1') !== '0'
     const debug = process.env.CURRENTS_DEBUG === '1'
     const fetchHtml = process.env.CURRENTS_FETCH_HTML === '1'
     const articleCap = Number(process.env.CURRENTS_ARTICLE_MAX_CHARS || 20000)
     // Simple per-URL cache during this function run to avoid duplicate fetches if duplicates appear
-    const urlContentCache: Record<string,string> = {}
+    const urlContentCache: Record<string, string> = {}
 
     async function fetchFullArticle(u: string | undefined): Promise<string | undefined> {
       if (!fetchHtml || !u) return undefined
@@ -340,15 +487,15 @@ async function fetchCurrents(topic: string, opts?: CurrentsOptions): Promise<Sou
         const html = await htmlRes.text()
         // crude extraction: remove scripts/styles, strip tags, collapse whitespace
         const cleaned = html
-          .replace(/<script[\s\S]*?<\/script>/gi,' ')
-          .replace(/<style[\s\S]*?<\/style>/gi,' ')
-          .replace(/<noscript[\s\S]*?<\/noscript>/gi,' ')
-          .replace(/<header[\s\S]*?<\/header>/gi,' ')
-          .replace(/<footer[\s\S]*?<\/footer>/gi,' ')
-          .replace(/<nav[\s\S]*?<\/nav>/gi,' ')
-          .replace(/<[^>]+>/g,' ') // strip tags
-          .replace(/&nbsp;/g,' ')
-          .replace(/\s+/g,' ')    // collapse
+          .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+          .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+          .replace(/<noscript[\s\S]*?<\/noscript>/gi, ' ')
+          .replace(/<header[\s\S]*?<\/header>/gi, ' ')
+          .replace(/<footer[\s\S]*?<\/footer>/gi, ' ')
+          .replace(/<nav[\s\S]*?<\/nav>/gi, ' ')
+          .replace(/<[^>]+>/g, ' ') // strip tags
+          .replace(/&nbsp;/g, ' ')
+          .replace(/\s+/g, ' ')    // collapse
           .trim()
         const sliced = cleaned.slice(0, articleCap)
         urlContentCache[u] = sliced
@@ -368,12 +515,12 @@ async function fetchCurrents(topic: string, opts?: CurrentsOptions): Promise<Sou
         publishedAt: n.published as string | undefined,
         extra: {
           author: n.author,
-            category: n.category,
-            image: n.image,
-            id: n.id,
-            originalTotal: news.length,
-            strictFilter: strict,
-            requiredTokens: required
+          category: n.category,
+          image: n.image,
+          id: n.id,
+          originalTotal: news.length,
+          strictFilter: strict,
+          requiredTokens: required
         }
       } satisfies SourceItem
       return base
@@ -438,14 +585,14 @@ export async function logGeneration(caseStudyId: number | null, phase: string, i
       }
     })
     return
-  } catch (e:any) {
+  } catch (e: any) {
     if (process.env.LOG_RAW_FALLBACK === '1') {
       try {
         await prisma.$queryRawUnsafe(
           `INSERT INTO "CaseGenerationLog" ("caseStudyId", phase, "inputPayload", "outputPayload", error) VALUES ($1,$2,$3,$4,$5)`,
           caseStudyId, phase, safeInput ? JSON.stringify(safeInput) : null, safeOutput ? JSON.stringify(safeOutput) : null, safeError || null
         )
-      } catch {}
+      } catch { }
     }
     if (process.env.GENERATION_LOG_DEBUG === '1') {
       // eslint-disable-next-line no-console

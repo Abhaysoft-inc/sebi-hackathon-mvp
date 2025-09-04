@@ -10,6 +10,7 @@ interface CaseStudy {
   correctOptionIndex: number | null
   explanation: string
   createdAt?: string
+  questionCount?: number
 }
 
 interface CaseStudyCardProps {
@@ -22,7 +23,8 @@ export default function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
   const clipped = snippet.length > maxChars ? snippet.slice(0, maxChars).trim() + '…' : snippet
 
   const href = caseStudy.slug ? `/case/${caseStudy.slug}` : `/case/${caseStudy.id}`
-  const questionCount = caseStudy.options?.length || 0
+  // Use questionCount if available, otherwise fall back to options length for backward compatibility
+  const questionCount = caseStudy.questionCount ?? caseStudy.options?.length ?? 0
   const created = caseStudy.createdAt ? new Date(caseStudy.createdAt) : null
   const createdLabel = created ? created.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : null
 

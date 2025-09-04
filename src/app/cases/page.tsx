@@ -11,6 +11,7 @@ interface CaseStudyData {
   options: string[]
   correctOptionIndex: number | null
   explanation: string
+  questionCount: number
 }
 
 async function getCaseStudies(): Promise<CaseStudyData[]> {
@@ -28,6 +29,11 @@ async function getCaseStudies(): Promise<CaseStudyData[]> {
         explanation: true,
         slug: true,
         createdAt: true,
+        quizQuestions: {
+          select: {
+            id: true
+          }
+        }
       },
       orderBy: {
         createdAt: 'desc'
@@ -43,7 +49,8 @@ async function getCaseStudies(): Promise<CaseStudyData[]> {
       challengeQuestion: cs.challengeQuestion,
       options: Array.isArray(cs.options) ? cs.options as string[] : (Object.values(cs.options as object) as string[]),
       correctOptionIndex: cs.correctOptionIndex,
-      explanation: cs.explanation
+      explanation: cs.explanation,
+      questionCount: cs.quizQuestions.length
     }))
   } catch (error) {
     console.error('Error fetching case studies:', error)

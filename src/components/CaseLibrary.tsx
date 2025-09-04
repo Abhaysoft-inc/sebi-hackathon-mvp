@@ -13,6 +13,7 @@ interface CaseStudy {
     options: string[]
     correctOptionIndex: number | null
     explanation: string
+    questionCount: number
 }
 
 interface CaseLibraryProps {
@@ -88,8 +89,8 @@ export default function CaseLibrary({ caseStudies }: CaseLibraryProps) {
                         <button
                             onClick={() => setSortBy('newest')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${sortBy === 'newest'
-                                    ? 'bg-blue-600 text-white shadow-sm'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                         >
                             Newest
@@ -97,8 +98,8 @@ export default function CaseLibrary({ caseStudies }: CaseLibraryProps) {
                         <button
                             onClick={() => setSortBy('oldest')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${sortBy === 'oldest'
-                                    ? 'bg-blue-600 text-white shadow-sm'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                         >
                             Oldest
@@ -111,8 +112,8 @@ export default function CaseLibrary({ caseStudies }: CaseLibraryProps) {
                         <button
                             onClick={() => setFilterBy('all')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filterBy === 'all'
-                                    ? 'bg-green-600 text-white shadow-sm'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-green-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                         >
                             All
@@ -120,8 +121,8 @@ export default function CaseLibrary({ caseStudies }: CaseLibraryProps) {
                         <button
                             onClick={() => setFilterBy('fraud')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filterBy === 'fraud'
-                                    ? 'bg-red-600 text-white shadow-sm'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-red-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                         >
                             Fraud
@@ -129,8 +130,8 @@ export default function CaseLibrary({ caseStudies }: CaseLibraryProps) {
                         <button
                             onClick={() => setFilterBy('market')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filterBy === 'market'
-                                    ? 'bg-purple-600 text-white shadow-sm'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-purple-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                         >
                             Market
