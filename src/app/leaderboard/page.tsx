@@ -1,7 +1,6 @@
 'use client';
 
 import { Trophy, Star, TrendingUp, Users, Flame, Award } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import BottomBar from "@/components/BottomBar";
 
 interface LeaderboardUser {
@@ -113,7 +112,6 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
 
       <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
         {/* Header */}
@@ -199,9 +197,9 @@ export default function LeaderboardPage() {
                 <div className="flex items-center space-x-4">
                   {/* Rank */}
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${user.rank === 1 ? 'bg-yellow-100 text-yellow-700' :
-                      user.rank === 2 ? 'bg-gray-100 text-gray-600' :
-                        user.rank === 3 ? 'bg-orange-100 text-orange-600' :
-                          'bg-gray-50 text-gray-500'
+                    user.rank === 2 ? 'bg-gray-100 text-gray-600' :
+                      user.rank === 3 ? 'bg-orange-100 text-orange-600' :
+                        'bg-gray-50 text-gray-500'
                     }`}>
                     {user.rank}
                   </div>

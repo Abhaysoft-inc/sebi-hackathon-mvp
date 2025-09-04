@@ -87,7 +87,7 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
 
     return (
         <>
-            {/* Overlay */}
+            {/* Overlay - only on mobile */}
             {isOpen && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
@@ -99,7 +99,6 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
             <div className={`
         fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:translate-x-0 md:static md:shadow-none md:border-r md:border-gray-200
       `}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -111,7 +110,8 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
                     </div>
                     <button
                         onClick={() => onOpenChange(false)}
-                        className="p-1 rounded-lg hover:bg-gray-100 md:hidden"
+                        className="p-1 rounded-lg hover:bg-gray-100 transition-colors"
+                        aria-label="Close navigation menu"
                     >
                         <X className="w-5 h-5 text-gray-600" />
                     </button>

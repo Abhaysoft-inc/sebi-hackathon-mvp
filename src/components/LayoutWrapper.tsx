@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import NavDrawer from './NavDrawer';
 
@@ -25,9 +25,28 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
     const pathname = usePathname();
     const [isDrawerOpen, setDrawerOpen] = useState(false);
 
+    // Set initial drawer state based on screen size
+    useEffect(() => {
+        const handleResize = () => {
+            // On desktop screens (768px and above), open drawer by default
+            if (window.innerWidth >= 768) {
+                setDrawerOpen(true);
+            } else {
+                setDrawerOpen(false);
+            }
+        };
+
+        // Set initial state
+        handleResize();
+
+        // Listen for resize events
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Pages that should NOT have the nav drawer
-    const excludedPages = [
-        '/', // Landing page
+    const excludedPages: string[] = [
+        // '/', // Landing page - removed to enable hamburger menu
     ];
 
     // Check if current path is a quiz playing page (dynamic routes like /quiz/ranked/[id])
@@ -44,7 +63,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
         <DrawerContext.Provider value={{ isDrawerOpen, setDrawerOpen }}>
             <div className="flex min-h-screen bg-gray-50">
                 <NavDrawer isOpen={isDrawerOpen} onOpenChange={setDrawerOpen} />
-                <main className="flex-1 md:ml-0">
+                <main className={`flex-1 transition-all duration-300 ease-in-out ${isDrawerOpen ? 'md:ml-64' : 'md:ml-0'}`}>
                     {children}
                 </main>
             </div>
