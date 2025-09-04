@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Clock, Users, Trophy, Calendar, Play, Star, TrendingUp, AlertCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Clock, Users, Trophy, Calendar, Play, Star, TrendingUp, AlertCircle, Check } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import BottomBar from '@/components/BottomBar';
 
@@ -19,9 +20,21 @@ interface Quiz {
     topics: string[];
     status: 'upcoming' | 'ongoing' | 'completed';
     timeRemaining?: string;
+    isRegistered?: boolean;
 }
 
-const QuizCard: React.FC<{ quiz: Quiz }> = ({ quiz }) => {
+const QuizCard: React.FC<{ quiz: Quiz; onRegister: (quizId: string) => void }> = ({ quiz, onRegister }) => {
+    const router = useRouter();
+
+    const handleButtonClick = () => {
+        if (quiz.status === 'ongoing') {
+            // Navigate to quiz playing page
+            router.push(`/quiz/ranked/${quiz.id}`);
+        } else if (quiz.status === 'upcoming' && !quiz.isRegistered) {
+            // Register for the quiz
+            onRegister(quiz.id);
+        }
+    };
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'upcoming': return 'bg-blue-100 text-blue-800 border-blue-200';
@@ -97,19 +110,31 @@ const QuizCard: React.FC<{ quiz: Quiz }> = ({ quiz }) => {
             )}
 
             <button
+                onClick={handleButtonClick}
                 className={`w-full py-2 px-4 rounded-lg font-medium text-sm transition-colors flex items-center justify-center space-x-2 ${quiz.status === 'ongoing'
                     ? 'bg-green-600 hover:bg-green-700 text-white'
-                    : quiz.status === 'upcoming'
+                    : quiz.status === 'upcoming' && !quiz.isRegistered
                         ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : quiz.status === 'upcoming' && quiz.isRegistered
+                            ? 'bg-green-100 text-green-800 border border-green-300 cursor-default'
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
-                disabled={quiz.status === 'completed'}
+                disabled={quiz.status === 'completed' || (quiz.status === 'upcoming' && quiz.isRegistered)}
             >
-                <Play className="w-4 h-4" />
-                <span>
-                    {quiz.status === 'ongoing' ? 'Join Now' :
-                        quiz.status === 'upcoming' ? 'Register' : 'Completed'}
-                </span>
+                {quiz.status === 'upcoming' && quiz.isRegistered ? (
+                    <>
+                        <Check className="w-4 h-4" />
+                        <span>Registered</span>
+                    </>
+                ) : (
+                    <>
+                        <Play className="w-4 h-4" />
+                        <span>
+                            {quiz.status === 'ongoing' ? 'Join Now' :
+                                quiz.status === 'upcoming' ? 'Register' : 'Completed'}
+                        </span>
+                    </>
+                )}
             </button>
         </div>
     );
@@ -117,6 +142,13 @@ const QuizCard: React.FC<{ quiz: Quiz }> = ({ quiz }) => {
 
 const RankedQuizPage = () => {
     const [activeTab, setActiveTab] = useState<'all' | 'upcoming' | 'ongoing'>('all');
+    const [registeredQuizzes, setRegisteredQuizzes] = useState<Set<string>>(new Set());
+
+    const handleRegister = (quizId: string) => {
+        setRegisteredQuizzes(prev => new Set([...prev, quizId]));
+        // Here you could also make an API call to register the user
+        // await registerForQuiz(quizId);
+    };
 
     const quizzes: Quiz[] = [
         {
@@ -200,13 +232,6 @@ const RankedQuizPage = () => {
         return quiz.status === activeTab;
     });
 
-    const stats = {
-        totalQuizzes: quizzes.length,
-        activeParticipants: quizzes.reduce((sum, quiz) => sum + quiz.participants, 0),
-        totalPrizePool: '₹2,95,000',
-        ongoingQuizzes: quizzes.filter(q => q.status === 'ongoing').length
-    };
-
     return (
         <div className="min-h-screen bg-gray-50">
             <Navbar />
@@ -254,7 +279,14 @@ const RankedQuizPage = () => {
                 {/* Quiz Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredQuizzes.map((quiz) => (
-                        <QuizCard key={quiz.id} quiz={quiz} />
+                        <QuizCard
+                            key={quiz.id}
+                            quiz={{
+                                ...quiz,
+                                isRegistered: registeredQuizzes.has(quiz.id)
+                            }}
+                            onRegister={handleRegister}
+                        />
                     ))}
                 </div>
 

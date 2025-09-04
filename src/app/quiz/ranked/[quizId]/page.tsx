@@ -35,6 +35,7 @@ const QuizPlayPage = () => {
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [showResults, setShowResults] = useState(false);
     const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+    const [timerInitialized, setTimerInitialized] = useState(false);
 
     // Mock quiz data - in real app, this would come from API
     const quizData: QuizData = {
@@ -121,6 +122,7 @@ const QuizPlayPage = () => {
     useEffect(() => {
         if (quizStarted && !quizCompleted) {
             setTimeLeft(quizData.duration * 60); // Convert minutes to seconds
+            setTimerInitialized(true);
         }
     }, [quizStarted, quizCompleted, quizData.duration]);
 
@@ -128,11 +130,12 @@ const QuizPlayPage = () => {
         if (timeLeft > 0 && quizStarted && !quizCompleted) {
             const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
             return () => clearTimeout(timer);
-        } else if (timeLeft === 0 && quizStarted) {
+        } else if (timeLeft === 0 && quizStarted && !quizCompleted && timerInitialized) {
             // Auto-submit when time runs out (no confirmation needed)
+            // Only if timer has actually been initialized
             confirmSubmitQuiz();
         }
-    }, [timeLeft, quizStarted, quizCompleted]);
+    }, [timeLeft, quizStarted, quizCompleted, timerInitialized]);
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60);
@@ -142,6 +145,12 @@ const QuizPlayPage = () => {
 
     const handleStartQuiz = () => {
         setQuizStarted(true);
+        setQuizCompleted(false);
+        setShowResults(false);
+        setShowSubmitConfirm(false);
+        setCurrentQuestion(0);
+        setSelectedAnswers({});
+        setTimerInitialized(false);
     };
 
     const handleAnswerSelect = (answerIndex: number) => {
@@ -279,10 +288,10 @@ const QuizPlayPage = () => {
                                                         <div
                                                             key={optionIndex}
                                                             className={`p-2 sm:p-3 rounded text-xs sm:text-sm leading-tight ${optionIndex === question.correctAnswer
-                                                                    ? 'bg-green-100 text-green-800 border border-green-300'
-                                                                    : optionIndex === userAnswer && !isCorrect
-                                                                        ? 'bg-red-100 text-red-800 border border-red-300'
-                                                                        : 'bg-gray-50 text-gray-700'
+                                                                ? 'bg-green-100 text-green-800 border border-green-300'
+                                                                : optionIndex === userAnswer && !isCorrect
+                                                                    ? 'bg-red-100 text-red-800 border border-red-300'
+                                                                    : 'bg-gray-50 text-gray-700'
                                                                 }`}
                                                         >
                                                             {option}
@@ -383,14 +392,14 @@ const QuizPlayPage = () => {
                                 key={index}
                                 onClick={() => handleAnswerSelect(index)}
                                 className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-colors ${selectedAnswers[currentQuestion] === index
-                                        ? 'border-blue-500 bg-blue-50 text-blue-900'
-                                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                    ? 'border-blue-500 bg-blue-50 text-blue-900'
+                                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                                     }`}
                             >
                                 <div className="flex items-start sm:items-center space-x-3">
                                     <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0 ${selectedAnswers[currentQuestion] === index
-                                            ? 'border-blue-500 bg-blue-500'
-                                            : 'border-gray-300'
+                                        ? 'border-blue-500 bg-blue-500'
+                                        : 'border-gray-300'
                                         }`}>
                                         {selectedAnswers[currentQuestion] === index && (
                                             <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
@@ -411,8 +420,8 @@ const QuizPlayPage = () => {
                             onClick={handlePrevQuestion}
                             disabled={currentQuestion === 0}
                             className={`w-full sm:w-auto flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-colors ${currentQuestion === 0
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
                                 }`}
                         >
                             <ArrowLeft className="w-4 h-4" />
@@ -427,8 +436,8 @@ const QuizPlayPage = () => {
                             onClick={handleNextQuestion}
                             disabled={currentQuestion === quizData.questions.length - 1}
                             className={`w-full sm:w-auto flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-colors ${currentQuestion === quizData.questions.length - 1
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-blue-600 hover:bg-blue-700 text-white'
                                 }`}
                         >
                             <span>Next</span>
