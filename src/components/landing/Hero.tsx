@@ -29,7 +29,7 @@ export function Hero() {
   }, [featureIdx]);
 
   return (
-    <section className="relative py-24 md:py-32 min-h-[70vh] flex items-center overflow-hidden">
+    <section className="relative py-12 md:py-20 min-h-[70vh] flex items-center overflow-hidden">
       <div className="relative max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 w-full">
         <div className="space-y-10">
           <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-tight text-gray-900 max-w-5xl">
@@ -62,7 +62,7 @@ export function Hero() {
             >
               Get Started
             </a>
-            <a href="/about" className="rounded-md bg-white border border-gray-300 text-gray-900 px-7 py-3 text-base font-semibold tracking-wide shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition">Learn More</a>
+            <a href="/cases" className="rounded-md bg-white border border-gray-300 text-gray-900 px-7 py-3 text-base font-semibold tracking-wide shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition">Explore Cases</a>
           </div>
         </div>
       </div>

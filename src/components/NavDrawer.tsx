@@ -13,7 +13,8 @@ import {
     X,
     LogOut,
     User,
-    FileText
+    FileText,
+    TrendingUp
 } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
 import { useI18n } from '../contexts/I18nContext'; interface NavItem {
@@ -34,6 +35,7 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
     const navItems: NavItem[] = [
         { href: '/feed', label: t('nav.feed', 'Feed'), icon: <Home className="w-5 h-5" /> },
         { href: '/cases', label: t('nav.cases', 'Case Studies'), icon: <BookOpen className="w-5 h-5" /> },
+        { href: '/ipos', label: t('nav.ipos', 'IPOs'), icon: <TrendingUp className="w-5 h-5" /> },
         { href: '/quiz/ranked', label: t('nav.quiz', 'Quizzes'), icon: <Trophy className="w-5 h-5" /> },
         { href: '/leaderboard', label: t('nav.leaderboard', 'Leaderboard'), icon: <BarChart3 className="w-5 h-5" /> },
         { href: '/circulars', label: t('nav.circulars', 'SEBI Circulars'), icon: <img src="/sebi-logo.png" alt="SEBI" className="w-5 h-5 object-contain" /> },

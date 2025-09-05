@@ -1,15 +1,15 @@
 interface Module { key: string; title: string; blurb: string; status: 'now' | 'next' | 'vision'; }
 
 const modules: Module[] = [
-  { key:'creators', title:'Regulated Creator Hub', blurb:'Only SEBI-registered contributors publish explainer videos & deep-dives with credibility markers.', status:'now' },
-  { key:'cases', title:'Investigative Case Engine', blurb:'Narrative + quiz synthesis pipeline for misconduct & market pattern learning.', status:'now' },
-  { key:'gamification', title:'Competitions & XP', blurb:'Timed challenges, profit simulations & streak rewards to sustain engagement.', status:'next' },
-  { key:'multilingual', title:'Multilingual Layer', blurb:'Auto summary + translation of circulars, filings & educator content.', status:'next' },
-  { key:'realtime-explain', title:'Real‑Time Price Explain', blurb:'Contextual micro-explanations combining event streams & news embeddings.', status:'vision' },
-  { key:'scenarios', title:'Scenario Sandbox', blurb:'Run historical or hypothetical shocks against a virtual portfolio.', status:'vision' },
-  { key:'ai-advisor', title:'AI Portfolio Insights', blurb:'Guidance distilled from aggregated expert sessions & case taxonomy.', status:'vision' },
-  { key:'reg-sim', title:'Regulator Simulator', blurb:'Model outcomes of policy changes, circulars, or enforcement actions.', status:'vision' },
-  { key:'accessibility', title:'Inclusive Access Stack', blurb:'Audio nav, screen reader tuning, sign language overlays, color modes.', status:'next' },
+  { key: 'creators', title: 'Regulated Creator Hub', blurb: 'Only SEBI-registered contributors publish explainer videos & deep-dives with credibility markers.', status: 'now' },
+  { key: 'cases', title: 'Investigative Case Engine', blurb: 'Narrative + quiz synthesis pipeline for misconduct & market pattern learning.', status: 'now' },
+  { key: 'gamification', title: 'Competitions & XP', blurb: 'Timed challenges, profit simulations & streak rewards to sustain engagement.', status: 'now' },
+  { key: 'multilingual', title: 'Multilingual Layer', blurb: 'Auto summary + translation of circulars, filings & educator content.', status: 'now' },
+  { key: 'realtime-explain', title: 'Real‑Time Price Explain', blurb: 'Contextual micro-explanations combining event streams & news embeddings.', status: 'vision' },
+  { key: 'scenarios', title: 'Scenario Sandbox', blurb: 'Run historical or hypothetical shocks against a virtual portfolio.', status: 'vision' },
+  { key: 'ai-advisor', title: 'AI Portfolio Insights', blurb: 'Guidance distilled from aggregated expert sessions & case taxonomy.', status: 'vision' },
+  { key: 'reg-sim', title: 'Regulator Simulator', blurb: 'Model outcomes of policy changes, circulars, or enforcement actions.', status: 'vision' },
+  { key: 'accessibility', title: 'Inclusive Access Stack', blurb: 'Audio nav, screen reader tuning, sign language overlays, color modes.', status: 'next' },
 ]
 
 const badgeStyles: Record<Module['status'], string> = {
