@@ -1,11 +1,11 @@
 "use client"
-import { useEffect, useState, useCallback, use as usePromise } from 'react'
+import { useEffect, useState, useCallback, use as usePromise, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 interface QuizQ { id?: number; order: number; prompt: string; options: string[]; correctOptionIndex: number; explanation: string; category?: string; difficulty?: string }
 
 // In Next.js 15 params in client components is a Promise; unwrap with React.use
-export default function AdminCaseDetail({ params }: { params: Promise<{ id: string }> }) {
+function AdminCaseDetailCore({ params }: { params: Promise<{ id: string }> }) {
   const { id: idParam } = usePromise(params)
   const id = Number(idParam)
   const search = useSearchParams()
@@ -228,6 +228,14 @@ function TabBar({ tab, setTab, caseStudy }: any) {
       ))}
     </div>
   )
+}
+
+export default function AdminCaseDetail({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AdminCaseDetailCore params={params} />
+    </Suspense>
+  );
 }
 
 function ProgressBar({ step }: { step: 'seed'|'sources'|'synth'|'review'|'publish' }) {

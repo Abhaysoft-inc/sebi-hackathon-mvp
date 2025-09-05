@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useLoading } from '../contexts/LoadingContext';
 import { PageLoader } from './LoadingSpinner';
 
-export const NavigationLoader: React.FC = () => {
+const NavigationLoaderCore: React.FC = () => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { isLoading, setLoading } = useLoading();
@@ -58,4 +58,12 @@ export const NavigationLoader: React.FC = () => {
     }, [setLoading]);
 
     return isLoading ? <PageLoader /> : null;
+};
+
+export const NavigationLoader: React.FC = () => {
+    return (
+        <Suspense fallback={null}>
+            <NavigationLoaderCore />
+        </Suspense>
+    );
 };
