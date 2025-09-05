@@ -213,8 +213,8 @@ const VoiceAssistant: React.FC = () => {
           recognitionRef.current = rec;
           // Allow continuous interim capture; we'll decide when to process
           rec.continuous = true;
-            rec.interimResults = true;
-            rec.lang = 'en-IN';
+          rec.interimResults = true;
+          rec.lang = 'en-IN';
           rec.onresult = (e: any) => {
             let interim = '';
             let final = '';
@@ -252,7 +252,7 @@ const VoiceAssistant: React.FC = () => {
                   // Small delay before restart to avoid immediate repeat
                   setTimeout(() => {
                     if (stateRef.current === 'listening' && !manualStopRef.current) {
-                      try { recognitionRef.current?.start(); } catch {/* ignore */}
+                      try { recognitionRef.current?.start(); } catch {/* ignore */ }
                     }
                   }, 300);
                   return; // don't fall through to idle
@@ -274,7 +274,7 @@ const VoiceAssistant: React.FC = () => {
               const elapsed = Date.now() - listenStartedRef.current;
               if (elapsed < 1500 && restartCountRef.current < 5) {
                 restartCountRef.current += 1;
-                try { recognitionRef.current?.start(); } catch {/* ignore */}
+                try { recognitionRef.current?.start(); } catch {/* ignore */ }
                 return;
               }
               // treat as silence -> process
@@ -306,19 +306,19 @@ const VoiceAssistant: React.FC = () => {
             // 1. Ended very quickly with no speech -> restart aggressively (limit restarts)
             if (!hasTranscript && elapsed < 1500 && restartCountRef.current < 5) {
               restartCountRef.current += 1;
-              try { recognitionRef.current?.start(); } catch {}
+              try { recognitionRef.current?.start(); } catch { }
               return;
             }
             // 2. Some interim happened recently (silence less than 1s) but ended -> restart to continue
             if (!hasTranscript && sinceLast < 1000 && restartCountRef.current < 5) {
               restartCountRef.current += 1;
-              try { recognitionRef.current?.start(); } catch {}
+              try { recognitionRef.current?.start(); } catch { }
               return;
             }
             // 3. If we have partial transcript but silence triggered onend, allow one more continuation if under cutoffs
             if (hasTranscript && sinceLast < SILENCE_CUTOFF_MS && restartCountRef.current < 5 && totalSession < MAX_SESSION_MS) {
               restartCountRef.current += 1;
-              try { recognitionRef.current?.start(); } catch {}
+              try { recognitionRef.current?.start(); } catch { }
               return;
             }
             // Otherwise process what we have
@@ -352,7 +352,7 @@ const VoiceAssistant: React.FC = () => {
               stopAndProcess();
             }
           }, 750);
-        } catch (err:any) {
+        } catch (err: any) {
           setToast('Recognition start failed');
         }
       } else {
@@ -390,7 +390,7 @@ const VoiceAssistant: React.FC = () => {
       setLastMatch(match);
       // Simulate assistant generation
       const responseText = match
-        ? `Opening ${match.phrase.replace(/^(open|show|go to)\s+/,'')}`
+        ? `Opening ${match.phrase.replace(/^(open|show|go to)\s+/, '')}`
         : spoken
           ? 'Command not mapped yet.'
           : 'Silence.';
@@ -484,8 +484,7 @@ const VoiceAssistant: React.FC = () => {
       <button
         aria-label={panelOpen ? 'Close voice assistant panel' : 'Open voice assistant panel'}
         onClick={togglePanel}
-        style={{ position: 'fixed', bottom: 20, right: 20 }}
-        className={`group z-[999] w-16 h-16 rounded-full flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400/70 shadow-[0_0_0_4px_rgba(255,255,255,0.4),0_4px_18px_-2px_rgba(79,70,229,0.55)] relative border-[3px] border-white/80 backdrop-blur ${panelOpen ? 'bg-gradient-to-br from-rose-500 via-fuchsia-500 to-indigo-600' : 'bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 hover:brightness-110'}`}
+        className={`group z-[999] w-16 h-16 rounded-full flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400/70 shadow-[0_0_0_4px_rgba(255,255,255,0.4),0_4px_18px_-2px_rgba(79,70,229,0.55)] border-[3px] border-white/80 backdrop-blur fixed right-5 bottom-20 md:bottom-5 ${panelOpen ? 'bg-gradient-to-br from-rose-500 via-fuchsia-500 to-indigo-600' : 'bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 hover:brightness-110'}`}
       >
         {state === 'listening' && (
           <>
@@ -502,7 +501,7 @@ const VoiceAssistant: React.FC = () => {
       </button>
 
       {panelOpen && (
-        <div className="fixed z-[998] bottom-24 right-6 w-[380px] h-[520px] rounded-3xl bg-white/95 backdrop-blur border border-indigo-200 shadow-[0_8px_40px_-4px_rgba(79,70,229,0.35)] flex flex-col overflow-hidden">
+        <div className="fixed z-[998] bottom-28 md:bottom-24 right-6 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-8rem)] md:max-h-[calc(100vh-6rem)] rounded-3xl bg-white/95 backdrop-blur border border-indigo-200 shadow-[0_8px_40px_-4px_rgba(79,70,229,0.35)] flex flex-col overflow-hidden">
           {/* Panel Header */}
           <div className="px-4 py-3 flex items-center justify-between bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white">
             <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
@@ -515,7 +514,7 @@ const VoiceAssistant: React.FC = () => {
               Voice Assistant
             </div>
             <div className="flex items-center gap-2">
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${state==='listening' ? 'bg-rose-400/80' : state==='processing' ? 'bg-amber-400/80' : 'bg-white/25'}`}>{state.toUpperCase()}</span>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${state === 'listening' ? 'bg-rose-400/80' : state === 'processing' ? 'bg-amber-400/80' : 'bg-white/25'}`}>{state.toUpperCase()}</span>
               <button onClick={() => setPanelOpen(false)} className="p-1 rounded hover:bg-white/20 transition" aria-label='Close panel'>
                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={1.8} className='w-5 h-5'>
                   <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
@@ -525,20 +524,20 @@ const VoiceAssistant: React.FC = () => {
           </div>
           {/* Messages */}
           <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4 custom-scrollbar">
-            {messages.length === 0 && state==='idle' && (
+            {messages.length === 0 && state === 'idle' && (
               <div className='text-center text-xs text-gray-500 mt-12 space-y-2'>
                 <p className='font-medium'>No conversation yet.</p>
                 <p>Press the mic to start speaking or type then press Enter.</p>
               </div>
             )}
-            {messages.filter(m => !(VOICE_ONLY_MODE && m.role==='assistant')).map(msg => (
-              <div key={msg.id} className={`flex ${msg.role==='user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed shadow-sm relative ${msg.role==='user' ? 'bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white' : 'bg-white border border-gray-200 text-gray-800'} ${msg.status==='pending' ? 'opacity-60 italic' : ''}`}>
+            {messages.filter(m => !(VOICE_ONLY_MODE && m.role === 'assistant')).map(msg => (
+              <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed shadow-sm relative ${msg.role === 'user' ? 'bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white' : 'bg-white border border-gray-200 text-gray-800'} ${msg.status === 'pending' ? 'opacity-60 italic' : ''}`}>
                   {msg.text}
                 </div>
               </div>
             ))}
-            {state==='listening' && (
+            {state === 'listening' && (
               <div className='flex justify-start'>
                 <div className='max-w-[60%] rounded-2xl px-3 py-2 text-xs bg-white border border-gray-200 text-gray-600 flex items-center gap-2'>
                   <ListeningWave />
@@ -546,7 +545,7 @@ const VoiceAssistant: React.FC = () => {
                 </div>
               </div>
             )}
-            {state==='processing' && (
+            {state === 'processing' && (
               <div className='flex justify-start'>
                 <div className='max-w-[60%] rounded-2xl px-3 py-2 text-xs bg-white border border-gray-200 text-gray-600 flex items-center gap-2'>
                   <span className='w-2 h-2 rounded-full bg-amber-400 animate-pulse' /> Processing…
@@ -558,11 +557,11 @@ const VoiceAssistant: React.FC = () => {
           <div className="border-t border-indigo-100 bg-gradient-to-r from-indigo-50 via-white to-fuchsia-50 px-4 pt-2 pb-3 flex flex-col gap-2">
             <div className='flex items-center gap-2'>
               <button
-                onClick={() => state==='listening' ? stopAndProcess() : startListening()}
-                className={`relative w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md transition focus:outline-none focus:ring-2 focus:ring-indigo-400/50 ${state==='listening' ? 'bg-rose-500 hover:bg-rose-600 animate-pulse' : 'bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 hover:brightness-110'}`}
-                aria-label={state==='listening' ? 'Stop listening' : 'Start listening'}
+                onClick={() => state === 'listening' ? stopAndProcess() : startListening()}
+                className={`relative w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md transition focus:outline-none focus:ring-2 focus:ring-indigo-400/50 ${state === 'listening' ? 'bg-rose-500 hover:bg-rose-600 animate-pulse' : 'bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 hover:brightness-110'}`}
+                aria-label={state === 'listening' ? 'Stop listening' : 'Start listening'}
               >
-                {state==='listening' && (
+                {state === 'listening' && (
                   <>
                     <span className='absolute inset-0 rounded-full bg-fuchsia-500/30 animate-ping' />
                     <span className='absolute inset-0 rounded-full bg-rose-500/25 animate-pulse [animation-duration:2.4s]' />
@@ -574,23 +573,23 @@ const VoiceAssistant: React.FC = () => {
                 </svg>
               </button>
               <input
-                disabled={state!=='idle' && state!=='listening'}
+                disabled={state !== 'idle' && state !== 'listening'}
                 value={transcript}
                 onChange={e => setTranscript(e.target.value)}
-                onKeyDown={e => { if (!VOICE_ONLY_MODE && e.key==='Enter' && state==='listening') { stopAndProcess(); } }}
-                placeholder={state==='listening' ? 'Speak now… (auto)' : 'Click mic to start speaking…'}
+                onKeyDown={e => { if (!VOICE_ONLY_MODE && e.key === 'Enter' && state === 'listening') { stopAndProcess(); } }}
+                placeholder={state === 'listening' ? 'Speak now… (auto)' : 'Click mic to start speaking…'}
                 className='flex-1 text-sm rounded-xl border border-indigo-200 bg-white/70 focus:outline-none focus:ring-2 focus:ring-indigo-300/60 px-3 py-2 disabled:opacity-50'
               />
               <button
-                onClick={() => { if(state==='listening'){ stopAndProcess(); } else { startListening(); } }}
+                onClick={() => { if (state === 'listening') { stopAndProcess(); } else { startListening(); } }}
                 className='text-[11px] font-semibold px-3 py-2 rounded-lg bg-white border border-indigo-200 hover:bg-indigo-50 text-indigo-700 shadow-sm'
-              >{state==='listening' ? 'Send' : 'Mic'}</button>
+              >{state === 'listening' ? 'Send' : 'Mic'}</button>
             </div>
             <div className='flex flex-wrap gap-2'>
-              {['open feed','open ipos','open cases','open quizzes','open leaderboard']
-                .map(p => BASE_COMMANDS.find(c => c.phrase===p))
+              {['open feed', 'open ipos', 'open cases', 'open quizzes', 'open leaderboard']
+                .map(p => BASE_COMMANDS.find(c => c.phrase === p))
                 .filter(Boolean)
-                .slice(0,5)
+                .slice(0, 5)
                 .map(c => (
                   <button key={c!.id} onClick={() => { setTranscript(c!.phrase); setState('listening'); }} className='text-[10px] px-2 py-1 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium'> {c!.phrase} </button>
                 ))}
@@ -604,7 +603,7 @@ const VoiceAssistant: React.FC = () => {
       )}
 
       {toast && (
-        <div className="fixed z-[1000] bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-gray-900/95 text-white text-sm shadow-lg backdrop-blur flex items-center gap-2 border border-gray-700">
+        <div className="fixed z-[1000] bottom-20 md:bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-gray-900/95 text-white text-sm shadow-lg backdrop-blur flex items-center gap-2 border border-gray-700">
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           {toast}
         </div>
@@ -622,8 +621,8 @@ export default VoiceAssistant;
 const ListeningWave: React.FC = () => {
   return (
     <span className="flex items-end gap-[2px] h-4" aria-hidden>
-      {[0,1,2,3,4].map(i => (
-        <span key={i} className={`w-[3px] rounded-full bg-indigo-500 animate-pulse`} style={{ animationDelay: `${i*120}ms`, height: `${6 + (i%3)*4}px` }} />
+      {[0, 1, 2, 3, 4].map(i => (
+        <span key={i} className={`w-[3px] rounded-full bg-indigo-500 animate-pulse`} style={{ animationDelay: `${i * 120}ms`, height: `${6 + (i % 3) * 4}px` }} />
       ))}
     </span>
   );

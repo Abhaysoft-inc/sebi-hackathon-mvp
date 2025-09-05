@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Calendar, FileText, ArrowLeft, Share2, Download, Bookmark } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
+import jsPDF from 'jspdf';
 
 interface Circular {
     id: string;
@@ -57,6 +58,7 @@ export default function CircularDetailPage() {
     const router = useRouter();
     const [circular, setCircular] = useState<Circular | null>(null);
     const [isBookmarked, setIsBookmarked] = useState(false);
+    const [isDownloading, setIsDownloading] = useState(false);
 
     useEffect(() => {
         const foundCircular = circulars.find(c => c.id === params.id);
@@ -81,18 +83,85 @@ export default function CircularDetailPage() {
         }
     };
 
-    const handleDownload = () => {
+    const handleDownload = async () => {
         if (!circular) return;
 
-        const element = document.createElement('a');
-        const file = new Blob([`${circular.title}\n\nDate: ${circular.date}\n\n${circular.content}`], {
-            type: 'text/plain'
-        });
-        element.href = URL.createObjectURL(file);
-        element.download = `${circular.id}.txt`;
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+        setIsDownloading(true);
+
+        try {
+            // Simulate download processing time
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Create a new PDF document
+            const pdf = new jsPDF();
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const margin = 20;
+            const maxLineWidth = pageWidth - (margin * 2);
+
+            // Set font
+            pdf.setFont('helvetica');
+
+            // Add header
+            pdf.setFontSize(16);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('SECURITIES AND EXCHANGE BOARD OF INDIA (SEBI)', margin, 30);
+            pdf.text('CIRCULAR', margin, 45);
+
+            // Add title
+            pdf.setFontSize(14);
+            const titleLines = pdf.splitTextToSize(circular.title, maxLineWidth);
+            pdf.text(titleLines, margin, 65);
+
+            // Add date and ID
+            pdf.setFontSize(10);
+            pdf.setFont('helvetica', 'normal');
+            pdf.text(`Date: ${circular.date}`, margin, 85);
+            pdf.text(`Circular ID: ${circular.id}`, margin, 95);
+
+            // Add separator line
+            pdf.line(margin, 105, pageWidth - margin, 105);
+
+            // Add content
+            pdf.setFontSize(10);
+            const contentLines = pdf.splitTextToSize(circular.content, maxLineWidth);
+            let currentY = 120;
+
+            contentLines.forEach((line: string) => {
+                if (currentY > pdf.internal.pageSize.getHeight() - margin) {
+                    pdf.addPage();
+                    currentY = margin;
+                }
+                pdf.text(line, margin, currentY);
+                currentY += 5;
+            });
+
+            // Add footer on last page
+            if (currentY > pdf.internal.pageSize.getHeight() - 40) {
+                pdf.addPage();
+                currentY = margin;
+            }
+
+            currentY += 10;
+            pdf.line(margin, currentY, pageWidth - margin, currentY);
+            currentY += 10;
+
+            pdf.setFontSize(8);
+            pdf.text('This is an official SEBI circular downloaded from EduFinX platform.', margin, currentY);
+            currentY += 8;
+            pdf.text('For more information, visit: https://www.sebi.gov.in', margin, currentY);
+            currentY += 8;
+            pdf.text(`Downloaded on: ${new Date().toLocaleDateString('en-IN')} at ${new Date().toLocaleTimeString('en-IN')}`, margin, currentY);
+
+            // Save the PDF
+            const fileName = `SEBI_Circular_${circular.id}_${new Date().toISOString().split('T')[0]}.pdf`;
+            pdf.save(fileName);
+
+        } catch (error) {
+            console.error('Download failed:', error);
+            alert('Download failed. Please try again.');
+        } finally {
+            setIsDownloading(false);
+        }
     };
 
     if (!circular) {
@@ -147,9 +216,17 @@ export default function CircularDetailPage() {
                             </button>
                             <button
                                 onClick={handleDownload}
-                                className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                disabled={isDownloading}
+                                className={`p-2 rounded-lg transition-colors ${isDownloading
+                                        ? 'bg-blue-100 text-blue-600 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    }`}
                             >
-                                <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                                {isDownloading ? (
+                                    <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                                ) : (
+                                    <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                                )}
                             </button>
                         </div>
                     </div>
