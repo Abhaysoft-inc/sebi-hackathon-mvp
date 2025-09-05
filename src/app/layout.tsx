@@ -4,6 +4,7 @@ import "./globals.css";
 import { Footer } from "@/components/landing/Footer";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { Header } from "@/components/Header";
+import { I18nProvider } from "@/contexts/I18nContext";
 // Navbar & BottomBar removed for cleaner admin / case UI
 
 const geistSans = Geist({
@@ -40,15 +41,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LayoutWrapper>
-          <Header />
-          <div style={mainContainerStyle}>
-            <main className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8 space-y-10">
-              {children}
-            </main>
-          </div>
-          <Footer />
-        </LayoutWrapper>
+        <I18nProvider>
+          <LayoutWrapper>
+            <Header />
+            <div style={mainContainerStyle}>
+              <main className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8 space-y-10">
+                {children}
+              </main>
+            </div>
+            <Footer />
+          </LayoutWrapper>
+        </I18nProvider>
       </body>
     </html>
   );

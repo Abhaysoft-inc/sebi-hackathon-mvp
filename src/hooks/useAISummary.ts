@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { AISummary } from '../types/aiSummary';
 import { Post as PostType } from '../types/post';
 import { processAISummary } from '../services/aiSummaryService';
+import { useI18n } from '../contexts/I18nContext';
 
 export const useAISummary = () => {
+    const { currentLanguage } = useI18n();
     const [showAISummary, setShowAISummary] = useState(false);
     const [aiSummary, setAiSummary] = useState<AISummary | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
@@ -17,7 +19,7 @@ export const useAISummary = () => {
         setIsGenerating(true);
 
         try {
-            const summary = await processAISummary(post);
+            const summary = await processAISummary(post, currentLanguage.code);
             setAiSummary(summary);
             setShowAISummary(true);
         } catch (error) {

@@ -2,14 +2,17 @@
 
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-import { Menu, User, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { Menu, User, LogOut, ChevronDown } from 'lucide-react';
 import { useDrawer } from './LayoutWrapper';
 import { StoriesModal } from './StoriesModal';
+import LanguageSelector from './LanguageSelector';
+import { useI18n } from '../contexts/I18nContext';
 
 export function Header() {
     const [isStoriesOpen, setIsStoriesOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const profileRef = useRef<HTMLDivElement>(null);
+    const { t } = useI18n();
 
     // Try to get drawer context, fallback to null if not available
     let setDrawerOpen: ((open: boolean) => void) | null = null;
@@ -71,15 +74,18 @@ export function Header() {
 
                     {/* Desktop Navigation - hidden on mobile */}
                     <nav className="hidden md:flex items-center gap-2 text-sm font-medium">
-                        <Link href="/feed" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">Feed</Link>
-                        <Link href="/cases" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 aria-[current=page]:bg-gray-900 aria-[current=page]:text-white transition-colors">Cases</Link>
+                        <Link href="/feed" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.feed', 'Feed')}</Link>
+                        <Link href="/cases" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 aria-[current=page]:bg-gray-900 aria-[current=page]:text-white transition-colors">{t('nav.cases', 'Cases')}</Link>
 
-                        <Link href="/leaderboard" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">Leaderboard</Link>
-                        <Link href="/admin" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">Admin</Link>
+                        <Link href="/leaderboard" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.leaderboard', 'Leaderboard')}</Link>
+                        <Link href="/admin" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.admin', 'Admin')}</Link>
                     </nav>
 
                     {/* Right side content */}
                     <div className="flex items-center gap-4">
+                        {/* Language Selector */}
+                        <LanguageSelector compact className="hidden sm:block" />
+
                         {/* Profile Button */}
                         <div className="relative" ref={profileRef}>
                             <button
@@ -108,7 +114,7 @@ export function Header() {
                                             onClick={() => setIsProfileOpen(false)}
                                         >
                                             <User className="w-4 h-4" />
-                                            View Profile
+                                            {t('user.viewProfile', 'View Profile')}
                                         </Link>
 
                                         {/* <Link
@@ -130,7 +136,7 @@ export function Header() {
                                                 }}
                                             >
                                                 <LogOut className="w-4 h-4" />
-                                                Sign Out
+                                                {t('user.signOut', 'Sign Out')}
                                             </button>
                                         </div>
                                     </div>

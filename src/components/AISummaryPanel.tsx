@@ -1,6 +1,7 @@
 import { X, Sparkles, Target, Lightbulb } from 'lucide-react';
 import { AISummary } from '../types/aiSummary';
 import { getSentimentColor, getRiskColor } from '../utils/aiSummaryUtils';
+import { useI18n } from '../contexts/I18nContext';
 
 interface AISummaryPanelProps {
     aiSummary: AISummary;
@@ -9,6 +10,8 @@ interface AISummaryPanelProps {
 }
 
 const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelProps) => {
+    const { t } = useI18n();
+
     return (
         <div className={`mt-6 bg-gradient-to-r from-white to-gray-50 rounded-lg border border-purple-200 overflow-hidden ${className} mb-5`}>
             {/* Header */}
@@ -16,12 +19,12 @@ const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelPr
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                         <Sparkles className="h-5 w-5" />
-                        <h3 className="font-semibold">AI Summary</h3>
+                        <h3 className="font-semibold">{t('ai.summary.title')}</h3>
                     </div>
                     <button
                         onClick={onClose}
                         className="text-white hover:text-gray-200 transition-colors"
-                        aria-label="Close AI Analysis"
+                        aria-label={t('ai.summary.closeAnalysis')}
                     >
                         <X className="h-5 w-5 cursor-pointer" />
                     </button>
@@ -46,7 +49,7 @@ const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelPr
                 <div>
                     <h5 className="font-medium text-gray-800 mb-2 flex items-center">
                         <Lightbulb className="h-4 w-4 mr-1" />
-                        Key Insights
+                        {t('ai.summary.keyInsights')}
                     </h5>
                     <ul className="space-y-1">
                         {aiSummary.keyPoints.map((point, index) => (
@@ -62,7 +65,7 @@ const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelPr
                 <div>
                     <h5 className="font-medium text-gray-800 mb-2 flex items-center">
                         <Target className="h-4 w-4 mr-1" />
-                        Recommended Actions
+                        {t('ai.summary.recommendedActions')}
                     </h5>
                     <ul className="space-y-1">
                         {aiSummary.actionItems.map((action, index) => (
@@ -90,7 +93,7 @@ const AISummaryPanel = ({ aiSummary, onClose, className = "" }: AISummaryPanelPr
 
                 {/* Disclaimer */}
                 <div className="text-xs text-gray-500 text-center pt-2 border-t border-gray-200">
-                    AI-generated analysis. Please verify information and consult financial advisors for investment decisions.
+                    {t('ai.summary.disclaimer')}
                 </div>
             </div>
         </div>
