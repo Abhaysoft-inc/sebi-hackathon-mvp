@@ -1,36 +1,323 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎯 EduFinX - SEBI Hackathon MVP
 
-## Getting Started
+**EduFinX** is a comprehensive financial education platform designed to enhance financial literacy in India through interactive learning experiences. Built for the SEBI Hackathon, this platform democratizes access to financial knowledge through gamified learning, multilingual support, and real-world case studies.
 
-First, run the development server:
+![EduFinX Logo](public/logo.jpg)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📸 App Screenshots
+
+### 🏠 **Social Feed - Financial News & Updates**
+![Social Feed](public/screenshots/feed.png)
+*Real-time financial news and updates in a social media style interface*
+
+### 📚 **Interactive Case Studies**
+![Case Studies](public/screenshots/case-studies.png)
+*Real-world financial scenarios with interactive challenges and learning modules*
+
+### 📊 **IPO Analysis Dashboard**
+![IPO Analysis](public/screenshots/ipos.png)
+*Comprehensive IPO listings with expert opinions, financial metrics, and investment recommendations*
+
+### 🎯 **Gamified Quiz System**
+![Quiz System](public/screenshots/quizze.png)
+*Engaging quizzes with scoring, rankings, and progress tracking*
+
+### 🏆 **Leaderboard & Competition**
+![Leaderboard](public/screenshots/leaderboard.png)
+*Track progress and compete with peers through comprehensive ranking system*
+
+### 🌍 **Multi-Language Support**
+![Multi-Language Support](public/screenshots/multi-language-support.png)
+*Native support for 10+ Indian languages with real-time translation*
+
+### 🎤 **AI-Powered Voice Assistant**
+![Voice Assistant](public/screenshots/LLM-backed-voice-assistant.png)
+*Hands-free navigation with natural language processing and voice commands*
+
+### 🤖 **AI Summary Generation**
+![AI Summary](public/screenshots/ai-summary.png)
+*Intelligent content summarization for complex financial documents*
+
+### 📋 **Latest SEBI Circulars**
+![SEBI Circulars](public/screenshots/latest-sebi-circulars.png)
+*Up-to-date regulatory information with multilingual translation support*
+
+## � Live Demo
+
+**Watch EduFinX in Action!**
+
+[![EduFinX Demo Video](https://img.youtube.com/vi/rAU94IH44_w/maxresdefault.jpg)](https://www.youtube.com/watch?v=rAU94IH44_w)
+
+🎬 **[Click here to watch the full demo](https://www.youtube.com/watch?v=rAU94IH44_w)**
+
+See how EduFinX transforms financial education through:
+- 🎯 Interactive case studies and real-world scenarios
+- 🌍 Seamless multilingual translation capabilities  
+- 🎤 AI-powered voice assistant navigation
+- 📊 Live IPO analysis with expert insights
+- 🏆 Gamified learning with leaderboards
+- 📱 Responsive design across all devices
+
+## �🌟 Key Features
+
+### 📚 **Interactive Learning Modules**
+- **Case Studies**: Real-world financial scenarios with interactive challenges
+- **Quizzes**: Ranked and practice quiz systems with scoring
+- **IPO Analysis**: Live IPO data with expert opinions and financial metrics
+- **SEBI Circulars**: Latest regulatory updates with multilingual translation
+
+### 🌍 **Multilingual Support**
+- Support for 10+ Indian languages (Hindi, Marathi, Gujarati, Bengali, Tamil, Telugu, Kannada, Malayalam, Punjabi)
+- Real-time translation using NLP Cloud API
+- Auto-translate functionality for complex financial terms
+- Right-to-left (RTL) language support
+
+### 🎮 **Gamification & Engagement**
+- **Leaderboard System**: Track progress and compete with peers
+- **Scoring System**: Points for completing cases and quizzes
+- **Progress Tracking**: Monitor learning journey across modules
+- **Stories Modal**: Interactive content discovery
+
+### 🎤 **Voice Assistant Integration**
+- Voice-controlled navigation using Web Speech API
+- Hands-free browsing experience
+- Natural language command processing
+- Accessibility enhancement for visually impaired users
+
+### 📱 **Modern User Experience**
+- Responsive design optimized for mobile and desktop
+- Dark/Light theme support
+- Smooth animations and transitions
+- Progressive Web App (PWA) capabilities
+
+## 🏗️ Technical Architecture
+
+### **Frontend Stack**
+- **Framework**: Next.js 15.5.2 with React 19.1.0
+- **Styling**: Tailwind CSS 3.4.17 with custom components
+- **Language**: TypeScript with strict type checking
+- **State Management**: React Context API for global state
+- **UI Components**: Custom component library with Lucide React icons
+
+### **Backend & Database**
+- **Database**: PostgreSQL with Prisma ORM 6.15.0
+- **Authentication**: NextAuth.js 4.24.7 with multiple providers
+- **API Routes**: RESTful API design with Next.js API routes
+- **Data Validation**: Zod schema validation
+
+### **External Integrations**
+- **Translation API**: NLP Cloud for multilingual support
+- **Voice Recognition**: Web Speech API for voice commands
+- **PDF Generation**: jsPDF for document export
+- **Search**: Fuse.js for fuzzy search capabilities
+
+## 📂 Project Structure
+
+```
+client/
+├── prisma/
+│   ├── schema.prisma          # Database schema
+│   ├── seed.cjs              # Database seeding
+│   └── seed.ts               # TypeScript seed file
+├── src/
+│   ├── app/                  # Next.js App Router
+│   │   ├── admin/           # Admin dashboard
+│   │   ├── api/             # API routes
+│   │   ├── cases/           # Case studies
+│   │   ├── circulars/       # SEBI circulars
+│   │   ├── feed/            # Social feed
+│   │   ├── ipos/            # IPO analysis
+│   │   ├── leaderboard/     # User rankings
+│   │   ├── quiz/            # Quiz system
+│   │   └── translation-demo/ # Translation features
+│   ├── components/          # Reusable components
+│   │   ├── landing/         # Landing page components
+│   │   └── ui/             # UI components
+│   ├── contexts/           # React contexts
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility libraries
+│   ├── services/           # External service integrations
+│   ├── types/              # TypeScript type definitions
+│   └── utils/              # Helper functions
+├── public/                 # Static assets
+└── scripts/               # Database initialization scripts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Quick Start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+- Node.js 18+ and npm/yarn
+- PostgreSQL database
+- Git
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
 
-## Learn More
+1. **Clone the repository**
+```bash
+git clone https://github.com/Abhaysoft-inc/sebi-hackathon-mvp.git
+cd sebi-hackathon-mvp/client
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Install dependencies**
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Environment Setup**
+Create a `.env.local` file in the root directory:
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/edufinx"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# NextAuth
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
 
-## Deploy on Vercel
+# Translation API
+NLPCLOUD_API_KEY="your-nlpcloud-api-key"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# OAuth Providers (optional)
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Database Setup**
+```bash
+# Generate Prisma client
+npm run prisma:generate
+
+# Run database migrations
+npm run migrate:dev
+
+# Seed the database with sample data
+npm run seed
+```
+
+5. **Start Development Server**
+```bash
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
+
+## 📊 Database Schema
+
+### Core Models
+- **CaseStudy**: Interactive financial case studies with questions
+- **QuizQuestion**: Multiple-choice questions for assessment
+- **User**: User authentication and profile management
+- **UserProgress**: Track learning progress and scores
+- **IPO**: Initial Public Offering data and analysis
+- **CaseGenerationLog**: Audit trail for AI-generated content
+
+### Key Relationships
+- Users can have multiple progress records across case studies
+- Case studies contain multiple quiz questions
+- IPOs have expert opinions and financial metrics
+- Generation logs track AI content creation process
+
+## 🎨 UI/UX Features
+
+### Design System
+- **Color Palette**: Indigo primary with amber accents
+- **Typography**: Geist Sans and Geist Mono fonts
+- **Components**: Consistent button styles, form inputs, and cards
+- **Animations**: Smooth transitions and loading states
+
+### Accessibility
+- WCAG 2.1 compliance
+- Screen reader support
+- Keyboard navigation
+- High contrast mode
+- Voice control integration
+
+## 🌐 API Endpoints
+
+### Public Endpoints
+- `GET /api/case-studies` - Fetch case studies
+- `GET /api/ipos` - IPO listings with expert opinions
+- `POST /api/translate` - Text translation service
+- `GET /api/leaderboard` - User rankings
+
+### Protected Endpoints
+- `POST /api/submit-answer` - Submit quiz answers
+- `GET /api/voice-index` - Voice command index
+- `POST /admin/api/cases` - Create new case studies
+
+## 🧪 Testing & Quality
+
+### Code Quality
+- ESLint configuration for code consistency
+- TypeScript strict mode enabled
+- Prettier for code formatting
+- Husky pre-commit hooks
+
+### Performance Optimization
+- Next.js Image optimization
+- Lazy loading for components
+- Code splitting and bundling
+- Responsive image delivery
+
+## 🚢 Deployment
+
+### Production Build
+```bash
+npm run build
+npm start
+```
+
+### Environment Variables for Production
+Ensure all environment variables are properly configured for production deployment.
+
+### Recommended Platforms
+- **Vercel**: Seamless Next.js deployment
+- **Railway**: PostgreSQL hosting
+- **Supabase**: Database and authentication
+- **Netlify**: Alternative hosting option
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow the existing code style and conventions
+- Write meaningful commit messages
+- Add tests for new features
+- Update documentation as needed
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🎯 SEBI Hackathon Goals
+
+EduFinX addresses key financial literacy challenges in India:
+
+1. **Accessibility**: Multilingual support for diverse Indian population
+2. **Engagement**: Gamified learning to increase retention
+3. **Relevance**: Real-world case studies and current market data
+4. **Innovation**: Voice control and AI-powered content generation
+5. **Inclusion**: Support for users with disabilities
+
+## 🏆 Awards & Recognition
+
+- SEBI Hackathon MVP Finalist
+- Innovation in Financial Education
+- Best User Experience Design
+
+## 📞 Support & Contact
+
+For questions, suggestions, or support:
+- **Email**: support@edufinx.com
+- **GitHub Issues**: [Create an issue](https://github.com/Abhaysoft-inc/sebi-hackathon-mvp/issues)
+- **Documentation**: [Wiki](https://github.com/Abhaysoft-inc/sebi-hackathon-mvp/wiki)
+
+---
+
+**Built with ❤️ for financial literacy in India** 🇮🇳
