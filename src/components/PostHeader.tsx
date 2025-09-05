@@ -15,7 +15,7 @@ const PostHeader = ({ user, postId, showTooltip, setShowTooltip }: PostHeaderPro
                 <img
                     src={user.avatar}
                     alt={user.name}
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-gray-100"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-gray-100 object-cover"
                 />
             </div>
             <div className="flex items-center gap-2 flex-1">

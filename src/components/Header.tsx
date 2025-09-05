@@ -83,9 +83,9 @@ export function Header() {
                     </nav>
 
                     {/* Right side content */}
-                    <div className="flex items-center gap-4">
-                        {/* Language Selector */}
-                        <LanguageSelector compact className="hidden sm:block" />
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        {/* Language Selector - now visible on all screen sizes */}
+                        <LanguageSelector compact />
 
                         {/* Profile Button */}
                         <div className="relative" ref={profileRef}>
