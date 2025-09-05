@@ -4,6 +4,9 @@ import "./globals.css";
 import { Footer } from "@/components/landing/Footer";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { Header } from "@/components/Header";
+// Voice assistant UI (client component). Importing directly creates a client boundary.
+import VoiceAssistant from '@/components/VoiceAssistant';
+import DevMountPing from '@/components/DevMountPing';
 // Navbar & BottomBar removed for cleaner admin / case UI
 
 const geistSans = Geist({
@@ -48,6 +51,9 @@ export default function RootLayout({
             </main>
           </div>
           <Footer />
+          <DevMountPing />
+          {/* Global Voice Assistant (Phase 1: UI only) */}
+          <VoiceAssistant />
         </LayoutWrapper>
       </body>
     </html>
