@@ -5,6 +5,8 @@ import { Footer } from "@/components/landing/Footer";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { Header } from "@/components/Header";
 import { I18nProvider } from "@/contexts/I18nContext";
+import { LoadingProvider } from "@/contexts/LoadingContext";
+import { NavigationLoader } from "@/components/NavigationLoader";
 // Voice assistant UI (client component). Importing directly creates a client boundary.
 import VoiceAssistant from '@/components/VoiceAssistant';
 import DevMountPing from '@/components/DevMountPing';
@@ -44,20 +46,23 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <I18nProvider>
-          <LayoutWrapper>
-            <Header />
-            <div style={mainContainerStyle}>
-              <main className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8 space-y-10">
-                {children}
-              </main>
-            </div>
-            <Footer />
-            <DevMountPing />
-            {/* Global Voice Assistant (Phase 1: UI only) */}
-            <VoiceAssistant />
-          </LayoutWrapper>
-        </I18nProvider>
+        <LoadingProvider>
+          <I18nProvider>
+            <NavigationLoader />
+            <LayoutWrapper>
+              <Header />
+              <div style={mainContainerStyle}>
+                <main className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8 space-y-10">
+                  {children}
+                </main>
+              </div>
+              <Footer />
+              <DevMountPing />
+              {/* Global Voice Assistant (Phase 1: UI only) */}
+              <VoiceAssistant />
+            </LayoutWrapper>
+          </I18nProvider>
+        </LoadingProvider>
       </body>
     </html>
   );
