@@ -4,43 +4,35 @@
 
 ![EduFinX Logo](public/logo.jpg)
 
-## 📸 App Screenshots
+## 🎥 Live Demo
 
-### 🏠 **Social Feed - Financial News & Updates**
-![Social Feed](public/screenshots/feed.png)
-*Real-time financial news and updates in a social media style interface*
+<div align="center">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/rAU94IH44_w" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
-### 📚 **Interactive Case Studies**
-![Case Studies](public/screenshots/case-studies.png)
-*Real-world financial scenarios with interactive challenges and learning modules*
+---
 
-### 📊 **IPO Analysis Dashboard**
-![IPO Analysis](public/screenshots/ipos.png)
-*Comprehensive IPO listings with expert opinions, financial metrics, and investment recommendations*
+## 📸 Key Features Showcase
 
-### 🎯 **Gamified Quiz System**
-![Quiz System](public/screenshots/quizze.png)
-*Engaging quizzes with scoring, rankings, and progress tracking*
+<div align="center">
+  
+| Feature | Screenshot |
+|---------|------------|
+| **� Social Feed** | ![Feed](public/screenshots/feed.png) |
+| **📚 Case Studies** | ![Cases](public/screenshots/case-studies.png) |
+| **📊 IPO Analysis** | ![IPOs](public/screenshots/ipos.png) |
+| **🎯 Quiz System** | ![Quiz](public/screenshots/quizze.png) |
 
-### 🏆 **Leaderboard & Competition**
-![Leaderboard](public/screenshots/leaderboard.png)
-*Track progress and compete with peers through comprehensive ranking system*
+| Feature | Screenshot |
+|---------|------------|
+| **🏆 Leaderboard** | ![Leaderboard](public/screenshots/leaderboard.png) |
+| **🌍 Multi-Language** | ![Language](public/screenshots/multi-language-support.png) |
+| **🎤 Voice Assistant** | ![Voice](public/screenshots/LLM-backed-voice-assistant.png) |
+| **🤖 AI Summary** | ![AI](public/screenshots/ai-summary.png) |
 
-### 🌍 **Multi-Language Support**
-![Multi-Language Support](public/screenshots/multi-language-support.png)
-*Native support for 10+ Indian languages with real-time translation*
+</div>
 
-### 🎤 **AI-Powered Voice Assistant**
-![Voice Assistant](public/screenshots/LLM-backed-voice-assistant.png)
-*Hands-free navigation with natural language processing and voice commands*
-
-### 🤖 **AI Summary Generation**
-![AI Summary](public/screenshots/ai-summary.png)
-*Intelligent content summarization for complex financial documents*
-
-### 📋 **Latest SEBI Circulars**
-![SEBI Circulars](public/screenshots/latest-sebi-circulars.png)
-*Up-to-date regulatory information with multilingual translation support*
+## 🌟 Key Features
 
 ## � Live Demo
 
