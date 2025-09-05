@@ -184,7 +184,11 @@ export default function CircularsPage() {
             <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex items-center gap-3 mb-4">
-                        <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+                        <img
+                            src="/sebi-logo.png"
+                            alt="SEBI Logo"
+                            className="h-10 w-10 object-contain"
+                        />
                         <div>
                             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">SEBI Circulars</h1>
                             <p className="text-xs sm:text-sm text-gray-600">Latest regulatory updates and guidelines</p>

@@ -44,18 +44,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LayoutWrapper>
-          <Header />
-          <div style={mainContainerStyle}>
-            <main className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8 space-y-10">
-              {children}
-            </main>
-          </div>
-          <Footer />
-          <DevMountPing />
-          {/* Global Voice Assistant (Phase 1: UI only) */}
-          <VoiceAssistant />
-        </LayoutWrapper>
         <I18nProvider>
           <LayoutWrapper>
             <Header />
@@ -65,6 +53,9 @@ export default function RootLayout({
               </main>
             </div>
             <Footer />
+            <DevMountPing />
+            {/* Global Voice Assistant (Phase 1: UI only) */}
+            <VoiceAssistant />
           </LayoutWrapper>
         </I18nProvider>
       </body>

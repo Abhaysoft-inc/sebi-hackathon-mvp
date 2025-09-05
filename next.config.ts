@@ -40,6 +40,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'akm-img-a-in.tosshub.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'avatar.iran.liara.run'
+      },
+      {
+        protocol: 'https',
+        'hostname': 'i.pravatar.cc'
+      }
     ],
   },
 };

@@ -58,6 +58,18 @@ const translations: Record<string, Record<string, string>> = {
         ml: 'കേസുകൾ',
         pa: 'ਮਾਮਲੇ'
     },
+    'nav.IPO': {
+        hi: 'IPO',
+        mr: 'IPO',
+        gu: 'IPO',
+        bn: 'IPO',
+        ta: 'வழக்குகள்',
+        te: 'కేసులు',
+        kn: 'ಪ್ರಕರಣಗಳು',
+        ml: 'കേസുകൾ',
+        pa: 'ਮਾਮਲੇ'
+    },
+
     'nav.leaderboard': {
         hi: 'लीडरबोर्ड',
         mr: 'लीडरबोर्ड',

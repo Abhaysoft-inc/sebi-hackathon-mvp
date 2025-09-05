@@ -60,10 +60,10 @@ export function Header() {
 
                         <button
                             onClick={handleLogoClick}
-                            className="text-base font-semibold tracking-tight text-gray-900 flex items-center gap-3 min-w-0 hover:scale-105 transition-transform duration-200 cursor-pointer"
+                            className="text-base font-semibold tracking-tight text-gray-900 flex items-center gap-3 min-w-0  transition-transform duration-200 cursor-pointer"
                         >
                             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-bold flex-shrink-0 relative">
-                                EX
+                                <img src="/flat.jpeg" alt="" />
                                 {/* Stories indicator ring */}
                                 <div className="absolute -inset-1 rounded-full border-2 border-orange-400 animate-pulse opacity-75"></div>
                             </span>
@@ -76,6 +76,7 @@ export function Header() {
                     <nav className="hidden md:flex items-center gap-2 text-sm font-medium">
                         <Link href="/feed" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.feed', 'Feed')}</Link>
                         <Link href="/cases" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 aria-[current=page]:bg-gray-900 aria-[current=page]:text-white transition-colors">{t('nav.cases', 'Cases')}</Link>
+                        <Link href="/ipos" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 aria-[current=page]:bg-gray-900 aria-[current=page]:text-white transition-colors">{t('nav.IPO', 'IPO')}</Link>
 
                         <Link href="/leaderboard" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.leaderboard', 'Leaderboard')}</Link>
                         <Link href="/admin" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.admin', 'Admin')}</Link>
