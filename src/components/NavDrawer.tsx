@@ -14,7 +14,9 @@ import {
     LogOut,
     User,
     FileText
-} from 'lucide-react'; interface NavItem {
+} from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
+import { useI18n } from '../contexts/I18nContext'; interface NavItem {
     href: string;
     label: string;
     icon: React.ReactNode;
@@ -27,14 +29,15 @@ interface NavDrawerProps {
 
 const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
     const pathname = usePathname();
+    const { t } = useI18n();
 
     const navItems: NavItem[] = [
-        { href: '/feed', label: 'Feed', icon: <Home className="w-5 h-5" /> },
-        { href: '/cases', label: 'Case Studies', icon: <BookOpen className="w-5 h-5" /> },
-        { href: '/quiz/ranked', label: 'Quizzes', icon: <Trophy className="w-5 h-5" /> },
-        { href: '/leaderboard', label: 'Leaderboard', icon: <BarChart3 className="w-5 h-5" /> },
-        { href: '/circulars', label: 'SEBI Circulars', icon: <FileText className="w-5 h-5" /> },
-        { href: '/case-studies', label: 'Study Materials', icon: <Users className="w-5 h-5" /> },
+        { href: '/feed', label: t('nav.feed', 'Feed'), icon: <Home className="w-5 h-5" /> },
+        { href: '/cases', label: t('nav.cases', 'Case Studies'), icon: <BookOpen className="w-5 h-5" /> },
+        { href: '/quiz/ranked', label: t('nav.quiz', 'Quizzes'), icon: <Trophy className="w-5 h-5" /> },
+        { href: '/leaderboard', label: t('nav.leaderboard', 'Leaderboard'), icon: <BarChart3 className="w-5 h-5" /> },
+        { href: '/circulars', label: t('nav.circulars', 'SEBI Circulars'), icon: <img src="/sebi-logo.png" alt="SEBI" className="w-5 h-5 object-contain" /> },
+        // { href: '/case-studies', label: 'Study Materials', icon: <Users className="w-5 h-5" /> },
     ];
 
     const isActivePath = (href: string) => {
@@ -105,10 +108,10 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200">
                     <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <BarChart3 className="w-5 h-5 text-white" />
+                        <div className="w-10 h-8 rounded-full flex items-center justify-center text-white">
+                            <img src="/flat.jpeg" alt="" className='rounded-full' />
                         </div>
-                        <span className="text-lg font-semibold text-gray-900">SEBI Learn</span>
+                        <span className="text-lg font-semibold text-gray-900">EduFinX</span>
                     </div>
                     <button
                         onClick={() => onOpenChange(false)}
@@ -140,32 +143,11 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
                     </ul>
                 </nav>
 
-                {/* User Section */}
-                <div className="border-t border-gray-200 p-4">
-                    <div className="flex items-center space-x-3 mb-4">
-                        <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-gray-600" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-medium text-gray-900">John Doe</p>
-                            <p className="text-xs text-gray-500">john@example.com</p>
-                        </div>
-                    </div>
-                    <div className="space-y-1">
-                        <Link
-                            href="/settings"
-                            className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100"
-                            onClick={() => onOpenChange(false)}
-                        >
-                            <Settings className="w-4 h-4" />
-                            <span>Settings</span>
-                        </Link>
-                        <button className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100 w-full text-left">
-                            <LogOut className="w-4 h-4" />
-                            <span>Log out</span>
-                        </button>
-                    </div>
+                {/* Language Selector at bottom */}
+                <div className="px-4 py-4 border-t border-gray-200">
+                    <LanguageSelector className="w-full" />
                 </div>
+
             </div>
         </>
     );

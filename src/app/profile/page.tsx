@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import {
     Mail,
     Phone,
@@ -123,12 +124,26 @@ export default function ProfilePage() {
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Profile Header */}
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-                    <div className="bg-gradient-to-r from-indigo-500 to-purple-600 h-32 sm:h-40"></div>
+                    {/* Banner with stock market background */}
+                    <div
+                        className="h-32 sm:h-40 relative bg-cover bg-center"
+                        style={{
+                            backgroundImage: 'url(https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=400&fit=crop)',
+                        }}
+                    >
+                        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+                    </div>
                     <div className="relative px-6 pb-6">
                         {/* Profile Picture */}
                         <div className="relative -mt-16 sm:-mt-20 mb-4">
-                            <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl sm:text-3xl font-bold border-4 border-white shadow-lg">
-                                AV
+                            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg overflow-hidden relative">
+                                <Image
+                                    src="https://avatars.githubusercontent.com/u/57512017?v=4"
+                                    alt="Abhay Vishwakarma"
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 640px) 96px, 128px"
+                                />
                                 <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors">
                                     <Camera className="w-4 h-4 text-gray-600" />
                                 </button>
@@ -318,40 +333,7 @@ export default function ProfilePage() {
                         </div>
 
                         {/* Achievements */}
-                        <div className="bg-white rounded-xl shadow-sm p-6">
-                            <h2 className="text-lg font-semibold text-gray-900 mb-4">Achievements</h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {achievements.map((achievement) => (
-                                    <div
-                                        key={achievement.id}
-                                        className={`p-4 border rounded-lg transition-all duration-200 ${achievement.earned
-                                            ? 'border-green-200 bg-green-50'
-                                            : 'border-gray-200 bg-gray-50 opacity-60'
-                                            }`}
-                                    >
-                                        <div className="flex items-start gap-3">
-                                            <div className="text-2xl">{achievement.icon}</div>
-                                            <div className="flex-1">
-                                                <h3 className={`font-medium ${achievement.earned ? 'text-green-900' : 'text-gray-600'}`}>
-                                                    {achievement.title}
-                                                </h3>
-                                                <p className={`text-sm ${achievement.earned ? 'text-green-700' : 'text-gray-500'}`}>
-                                                    {achievement.description}
-                                                </p>
-                                                {achievement.earned && achievement.earnedDate && (
-                                                    <p className="text-xs text-green-600 mt-1">
-                                                        Earned on {achievement.earnedDate}
-                                                    </p>
-                                                )}
-                                            </div>
-                                            {achievement.earned && (
-                                                <Award className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>

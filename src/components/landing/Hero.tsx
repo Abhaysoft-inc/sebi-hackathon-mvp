@@ -57,7 +57,7 @@ export function Hero() {
           </p>
           <div className="inline-flex flex-col sm:flex-row gap-4">
             <a
-              href="/"
+              href="/feed"
               className="rounded-md bg-white border border-indigo-600 text-indigo-600 px-7 py-3 text-base font-semibold tracking-wide shadow transition-colors duration-200 hover:bg-indigo-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
             >
               Get Started

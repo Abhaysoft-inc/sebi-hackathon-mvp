@@ -36,7 +36,7 @@ export default async function IPOPage() {
                 <img src={ipo.logoUrl} alt={ipo.companyName} className="w-12 h-12 rounded object-cover border" />
                 <h2 className="font-semibold text-lg group-hover:text-blue-400">{ipo.companyName}</h2>
               </div>
-              <div className="text-sm text-gray-300 space-y-1 mb-4">
+              <div className="text-sm text-gray-800 space-y-1 mb-4">
                 <div><span className="font-medium">Issue Window:</span> {new Date(ipo.issueOpenDate).toLocaleDateString()} - {new Date(ipo.issueCloseDate).toLocaleDateString()}</div>
                 <div><span className="font-medium">Price Band:</span> ₹{ipo.priceBandLower} - ₹{ipo.priceBandUpper}</div>
                 <div><span className="font-medium">Lot Size:</span> {ipo.lotSize}</div>
