@@ -1,64 +1,45 @@
-# 🎯 EduFinX -## 📸 Key Features Showcase
-
-<div align="center">
-  
-| Feature | Screenshot |
-|---------|------------|
-| **📱 Social Feed** | <img src="public/screenshots/feed.png" width="300" height="200" alt="Feed"> |
-| **📚 Case Studies** | <img src="public/screenshots/case-studies.png" width="300" height="200" alt="Cases"> |
-| **📊 IPO Analysis** | <img src="public/screenshots/ipos.png" width="300" height="200" alt="IPOs"> |
-| **🎯 Quiz System** | <img src="public/screenshots/quizze.png" width="300" height="200" alt="Quiz"> |
-
-| Feature | Screenshot |
-|---------|------------|
-| **🏆 Leaderboard** | <img src="public/screenshots/leaderboard.png" width="300" height="200" alt="Leaderboard"> |
-| **🌍 Multi-Language** | <img src="public/screenshots/multi-language-support.png" width="300" height="200" alt="Language"> |
-| **🎤 Voice Assistant** | <img src="public/screenshots/LLM-backed-voice-assistant.png" width="300" height="200" alt="Voice"> |
-| **🤖 AI Summary** | <img src="public/screenshots/ai-summary.png" width="300" height="200" alt="AI"> |
-
-</div>
+# 🎯 EduFinX - Spreading Investing Knowledge (MVP)
 
 **EduFinX** is a comprehensive financial education platform designed to enhance financial literacy in India through interactive learning experiences. Built for the SEBI Hackathon, this platform democratizes access to financial knowledge through gamified learning, multilingual support, and real-world case studies.
 
-![EduFinX Logo](public/logo.jpg)
+<!-- ![EduFinX Logo](public/logo.jpg) -->
 
 ## 🎥 Live Demo
 
-<div align="center">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/rAU94IH44_w" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
----
-
-## 📸 Key Features Showcase
-
-<div align="center">
-  
-| Feature | Screenshot |
-|---------|------------|
-| **� Social Feed** | ![Feed](public/screenshots/feed.png) |
-| **📚 Case Studies** | ![Cases](public/screenshots/case-studies.png) |
-| **📊 IPO Analysis** | ![IPOs](public/screenshots/ipos.png) |
-| **🎯 Quiz System** | ![Quiz](public/screenshots/quizze.png) |
-
-| Feature | Screenshot |
-|---------|------------|
-| **🏆 Leaderboard** | ![Leaderboard](public/screenshots/leaderboard.png) |
-| **🌍 Multi-Language** | ![Language](public/screenshots/multi-language-support.png) |
-| **🎤 Voice Assistant** | ![Voice](public/screenshots/LLM-backed-voice-assistant.png) |
-| **🤖 AI Summary** | ![AI](public/screenshots/ai-summary.png) |
-
-</div>
-
-## 🌟 Key Features
-
-## � Live Demo
-
-**Watch EduFinX in Action!**
-
-[![EduFinX Demo Video](https://img.youtube.com/vi/rAU94IH44_w/maxresdefault.jpg)](https://www.youtube.com/watch?v=rAU94IH44_w)
+<video src="public/sebi-hackathon-video-submission.webm" controls width="600"></video>
 
 🎬 **[Click here to watch the full demo](https://www.youtube.com/watch?v=rAU94IH44_w)**
+
+
+## 📸 App Screenshots
+
+### 🏠 **Social Feed - Financial News & Updates**
+<img src="public/screenshots/feed.png" alt="Social Feed" width="300"/>
+
+### 📚 **Interactive Case Studies**
+<img src="public/screenshots/case-studies.png" alt="Case Studies" width="300"/>
+
+### 📊 **IPO Analysis Dashboard**
+<img src="public/screenshots/ipos.png" alt="IPO Analysis" width="300"/>
+
+### 🎯 **Gamified Quiz System**
+<img src="public/screenshots/quizze.png" alt="Quiz System" width="300"/>
+
+### 🏆 **Leaderboard & Competition**
+<img src="public/screenshots/leaderboard.png" alt="Leaderboard" width="300"/>
+
+### 🌍 **Multi-Language Support**
+<img src="public/screenshots/multi-language-support.png" alt="Multi-Language Support" width="300"/>
+
+### 🎤 **AI-Powered Voice Assistant**
+<img src="public/screenshots/LLM-backed-voice-assistant.png" alt="Voice Assistant" width="300"/>
+
+### 🤖 **AI Summary Generation**
+<img src="public/screenshots/ai-summary.png" alt="AI Summary" width="300"/>
+
+### 📋 **Latest SEBI Circulars**
+<img src="public/screenshots/latest-sebi-circulars.png" alt="SEBI Circulars" width="300"/>
+
 
 See how EduFinX transforms financial education through:
 - 🎯 Interactive case studies and real-world scenarios
