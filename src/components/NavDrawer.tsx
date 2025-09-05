@@ -36,7 +36,7 @@ const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpenChange }) => {
         { href: '/cases', label: t('nav.cases', 'Case Studies'), icon: <BookOpen className="w-5 h-5" /> },
         { href: '/quiz/ranked', label: t('nav.quiz', 'Quizzes'), icon: <Trophy className="w-5 h-5" /> },
         { href: '/leaderboard', label: t('nav.leaderboard', 'Leaderboard'), icon: <BarChart3 className="w-5 h-5" /> },
-        { href: '/circulars', label: t('nav.circulars', 'SEBI Circulars'), icon: <img src="/sebi-logo.png" alt="SEBI" className="w-5 h-5" /> },
+        { href: '/circulars', label: t('nav.circulars', 'SEBI Circulars'), icon: <img src="/sebi-logo.png" alt="SEBI" className="w-5 h-5 object-contain" /> },
         // { href: '/case-studies', label: 'Study Materials', icon: <Users className="w-5 h-5" /> },
     ];
 

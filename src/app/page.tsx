@@ -1,6 +1,6 @@
 import { Hero } from '@/components/landing/Hero'
 import { FeatureBlocks } from '@/components/landing/FeatureBlocks'
-// import { ValueGrid } from '@/components/landing/ValueGrid'
+import { ValueGrid } from '@/components/landing/ValueGrid'
 import { PlatformMatrix } from '@/components/landing/PlatformMatrix'
 import { Testimonials } from '@/components/landing/Testimonials'
 import { CTA } from '@/components/landing/CTA'
@@ -12,7 +12,7 @@ export default function LandingPage() {
       <Hero />
       <FeatureBlocks />
       <PlatformMatrix />
-      {/* <ValueGrid /> */}
+      <ValueGrid />
       <Testimonials />
       <CTA />
     </div>

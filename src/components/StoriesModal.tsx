@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface StoryCard {
@@ -8,8 +9,8 @@ interface StoryCard {
     title: string;
     content: string;
     category: string;
-    bgGradient: string;
-    icon: string;
+    bgColor: string;
+    image: string;
 }
 
 interface StoriesModalProps {
@@ -23,48 +24,48 @@ const dailyKnowledge: StoryCard[] = [
         title: "What is a Stock?",
         content: "A stock represents ownership in a company. When you buy shares, you become a partial owner and can benefit from the company's growth through price appreciation and dividends.",
         category: "Basics",
-        bgGradient: "from-blue-400 to-purple-600",
-        icon: "📈"
+        bgColor: "bg-blue-600",
+        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&h=200&fit=crop"
     },
     {
         id: 2,
         title: "Bull vs Bear Market",
         content: "Bull Market: Prices are rising, investor confidence is high. Bear Market: Prices are falling by 20% or more, pessimism prevails. Understanding these cycles helps time your investments.",
         category: "Market Trends",
-        bgGradient: "from-green-400 to-blue-500",
-        icon: "🐂"
+        bgColor: "bg-green-600",
+        image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=200&h=200&fit=crop"
     },
     {
         id: 3,
         title: "P/E Ratio Explained",
         content: "Price-to-Earnings ratio shows how much investors pay for each rupee of earnings. Lower P/E might indicate undervaluation, higher P/E might suggest growth expectations.",
         category: "Valuation",
-        bgGradient: "from-orange-400 to-red-500",
-        icon: "🔢"
+        bgColor: "bg-orange-600",
+        image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=200&h=200&fit=crop"
     },
     {
         id: 4,
         title: "Diversification",
         content: "Don't put all eggs in one basket! Spread investments across different sectors, companies, and asset classes to reduce risk while maintaining growth potential.",
         category: "Risk Management",
-        bgGradient: "from-purple-400 to-pink-500",
-        icon: "🧺"
+        bgColor: "bg-purple-600",
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=200&fit=crop"
     },
     {
         id: 5,
         title: "Market Cap Categories",
         content: "Large Cap: Stable, established companies. Mid Cap: Growing companies with moderate risk. Small Cap: High growth potential but higher volatility.",
         category: "Company Size",
-        bgGradient: "from-teal-400 to-cyan-500",
-        icon: "🏢"
+        bgColor: "bg-teal-600",
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&h=200&fit=crop"
     },
     {
         id: 6,
         title: "Dividend Yield",
         content: "Annual dividend per share divided by stock price. Higher yield provides regular income but might indicate slower growth. Balance between income and growth based on your goals.",
         category: "Income Investing",
-        bgGradient: "from-indigo-400 to-purple-600",
-        icon: "💰"
+        bgColor: "bg-indigo-600",
+        image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=200&h=200&fit=crop"
     }
 ];
 
@@ -83,9 +84,11 @@ export function StoriesModal({ isOpen, onClose }: StoriesModalProps) {
                         setCurrentIndex(currentIndex + 1);
                         return 0;
                     } else {
-                        // Close modal when all stories are viewed
-                        onClose();
-                        return 0;
+                        // Close modal when all stories are viewed - use setTimeout to avoid setState during render
+                        setTimeout(() => {
+                            onClose();
+                        }, 0);
+                        return 100; // Keep progress at 100% until modal closes
                     }
                 }
                 return prev + 1;
@@ -103,7 +106,10 @@ export function StoriesModal({ isOpen, onClose }: StoriesModalProps) {
         if (currentIndex < dailyKnowledge.length - 1) {
             setCurrentIndex(currentIndex + 1);
         } else {
-            onClose();
+            // Use setTimeout to avoid setState during render
+            setTimeout(() => {
+                onClose();
+            }, 0);
         }
     }, [currentIndex, onClose]);
 
@@ -182,7 +188,7 @@ export function StoriesModal({ isOpen, onClose }: StoriesModalProps) {
 
             {/* Story card */}
             <div
-                className={`relative w-full max-w-sm mx-auto h-[75vh] max-h-[600px] bg-gradient-to-br ${currentStory.bgGradient} rounded-2xl shadow-2xl flex flex-col justify-between p-6 sm:p-8 text-white`}
+                className={`relative w-full max-w-sm mx-auto h-[75vh] max-h-[600px] ${currentStory.bgColor} rounded-2xl shadow-2xl flex flex-col justify-between p-6 sm:p-8 text-white`}
                 onClick={goToNext}
             >
                 {/* Category tag */}
@@ -192,10 +198,16 @@ export function StoriesModal({ isOpen, onClose }: StoriesModalProps) {
                     </span>
                 </div>
 
-                {/* Icon */}
+                {/* Image */}
                 <div className="text-center">
-                    <div className="text-6xl mb-6">
-                        {currentStory.icon}
+                    <div className="w-20 h-20 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white border-opacity-50 shadow-lg relative">
+                        <Image
+                            src={currentStory.image}
+                            alt={currentStory.title}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                        />
                     </div>
                 </div>
 

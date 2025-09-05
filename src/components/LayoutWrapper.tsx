@@ -29,7 +29,8 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
     useEffect(() => {
         const handleResize = () => {
             // On desktop screens (768px and above), open drawer by default
-            if (window.innerWidth >= 768) {
+            // BUT keep it closed on the landing page
+            if (window.innerWidth >= 768 && pathname !== '/') {
                 setDrawerOpen(true);
             } else {
                 setDrawerOpen(false);
@@ -42,7 +43,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
         // Listen for resize events
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [pathname]);
 
     // Pages that should NOT have the nav drawer
     const excludedPages: string[] = [
