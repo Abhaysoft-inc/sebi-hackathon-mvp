@@ -49,7 +49,7 @@ See how EduFinX transforms financial education through:
 - 🏆 Gamified learning with leaderboards
 - 📱 Responsive design across all devices
 
-## �🌟 Key Features
+## 🌟 Key Features
 
 ### 📚 **Interactive Learning Modules**
 - **Case Studies**: Real-world financial scenarios with interactive challenges
@@ -266,49 +266,3 @@ Ensure all environment variables are properly configured for production deployme
 - **Supabase**: Database and authentication
 - **Netlify**: Alternative hosting option
 
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-- Follow the existing code style and conventions
-- Write meaningful commit messages
-- Add tests for new features
-- Update documentation as needed
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎯 SEBI Hackathon Goals
-
-EduFinX addresses key financial literacy challenges in India:
-
-1. **Accessibility**: Multilingual support for diverse Indian population
-2. **Engagement**: Gamified learning to increase retention
-3. **Relevance**: Real-world case studies and current market data
-4. **Innovation**: Voice control and AI-powered content generation
-5. **Inclusion**: Support for users with disabilities
-
-## 🏆 Awards & Recognition
-
-- SEBI Hackathon MVP Finalist
-- Innovation in Financial Education
-- Best User Experience Design
-
-## 📞 Support & Contact
-
-For questions, suggestions, or support:
-- **Email**: support@edufinx.com
-- **GitHub Issues**: [Create an issue](https://github.com/Abhaysoft-inc/sebi-hackathon-mvp/issues)
-- **Documentation**: [Wiki](https://github.com/Abhaysoft-inc/sebi-hackathon-mvp/wiki)
-
----
-
-**Built with ❤️ for financial literacy in India** 🇮🇳
