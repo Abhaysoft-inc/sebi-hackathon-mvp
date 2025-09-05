@@ -1,4 +1,22 @@
-# 🎯 EduFinX - SEBI Hackathon MVP
+# 🎯 EduFinX -## 📸 Key Features Showcase
+
+<div align="center">
+  
+| Feature | Screenshot |
+|---------|------------|
+| **📱 Social Feed** | <img src="public/screenshots/feed.png" width="300" height="200" alt="Feed"> |
+| **📚 Case Studies** | <img src="public/screenshots/case-studies.png" width="300" height="200" alt="Cases"> |
+| **📊 IPO Analysis** | <img src="public/screenshots/ipos.png" width="300" height="200" alt="IPOs"> |
+| **🎯 Quiz System** | <img src="public/screenshots/quizze.png" width="300" height="200" alt="Quiz"> |
+
+| Feature | Screenshot |
+|---------|------------|
+| **🏆 Leaderboard** | <img src="public/screenshots/leaderboard.png" width="300" height="200" alt="Leaderboard"> |
+| **🌍 Multi-Language** | <img src="public/screenshots/multi-language-support.png" width="300" height="200" alt="Language"> |
+| **🎤 Voice Assistant** | <img src="public/screenshots/LLM-backed-voice-assistant.png" width="300" height="200" alt="Voice"> |
+| **🤖 AI Summary** | <img src="public/screenshots/ai-summary.png" width="300" height="200" alt="AI"> |
+
+</div>
 
 **EduFinX** is a comprehensive financial education platform designed to enhance financial literacy in India through interactive learning experiences. Built for the SEBI Hackathon, this platform democratizes access to financial knowledge through gamified learning, multilingual support, and real-world case studies.
 
