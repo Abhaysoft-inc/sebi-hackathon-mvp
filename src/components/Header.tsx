@@ -73,14 +73,14 @@ export function Header() {
                     </div>
 
                     {/* Desktop Navigation - hidden on mobile */}
-                    <nav className="hidden md:flex items-center gap-2 text-sm font-medium">
+                    {/* <nav className="hidden md:flex items-center gap-2 text-sm font-medium">
                         <Link href="/feed" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.feed', 'Feed')}</Link>
                         <Link href="/cases" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 aria-[current=page]:bg-gray-900 aria-[current=page]:text-white transition-colors">{t('nav.cases', 'Cases')}</Link>
                         <Link href="/ipos" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 aria-[current=page]:bg-gray-900 aria-[current=page]:text-white transition-colors">{t('nav.IPO', 'IPO')}</Link>
 
                         <Link href="/leaderboard" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.leaderboard', 'Leaderboard')}</Link>
                         <Link href="/admin" className="px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">{t('nav.admin', 'Admin')}</Link>
-                    </nav>
+                    </nav> */}
 
                     {/* Right side content */}
                     <div className="flex items-center gap-2 sm:gap-4">

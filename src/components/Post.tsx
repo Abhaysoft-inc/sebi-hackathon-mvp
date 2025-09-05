@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Post as PostType } from '../types/post';
 import PostHeader from './PostHeader';
 import PostImage from './PostImage';
@@ -17,6 +17,9 @@ interface PostProps {
 
 const Post = ({ post }: PostProps) => {
     const [showTooltip, setShowTooltip] = useState<number | null>(null);
+    const [isLiked, setIsLiked] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const commentInputRef = useRef<HTMLInputElement>(null);
     const {
         showAISummary,
         aiSummary,
@@ -26,6 +29,20 @@ const Post = ({ post }: PostProps) => {
     } = useAISummary();
 
     const onAIClick = () => handleAIButtonClick(post);
+
+    const handleLikeClick = () => {
+        setIsLiked(!isLiked);
+    };
+
+    const handleBookmarkClick = () => {
+        setIsBookmarked(!isBookmarked);
+    };
+
+    const handleCommentClick = () => {
+        if (commentInputRef.current) {
+            commentInputRef.current.focus();
+        }
+    };
 
     return (
         <div className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden animate-fade-in">
@@ -63,6 +80,11 @@ const Post = ({ post }: PostProps) => {
                         onAIClick={onAIClick}
                         isGeneratingAI={isGenerating}
                         showingAI={showAISummary}
+                        isLiked={isLiked}
+                        isBookmarked={isBookmarked}
+                        onLikeClick={handleLikeClick}
+                        onBookmarkClick={handleBookmarkClick}
+                        onCommentClick={handleCommentClick}
                     />
                 )}
 
@@ -91,6 +113,7 @@ const Post = ({ post }: PostProps) => {
                 {/* Only show PostContent for non-article posts */}
                 {post.type !== "article" && (
                     <PostContent
+                        ref={commentInputRef}
                         caption={post.caption}
                         likes={post.likes}
                         comments={post.comments}
@@ -98,7 +121,7 @@ const Post = ({ post }: PostProps) => {
                     />
                 )}
             </div>
-            
+
             <div className="px-4 pb-3 pt-0 flex flex-wrap gap-2">
                 {post.type === "article" && (
                     <span className="badge badge-blue">
@@ -120,7 +143,7 @@ const Post = ({ post }: PostProps) => {
                         Full Video
                     </span>
                 )}
-                {post.caption && post.caption.includes('#') && 
+                {post.caption && post.caption.includes('#') &&
                     post.caption.split(' ').filter(word => word.startsWith('#')).slice(0, 2).map((tag, i) => (
                         <span key={i} className="badge badge-yellow">
                             {tag}

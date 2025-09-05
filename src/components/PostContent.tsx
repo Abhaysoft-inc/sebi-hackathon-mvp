@@ -1,4 +1,5 @@
 import { Comment, User } from '../types/post';
+import { forwardRef } from 'react';
 
 interface PostContentProps {
     caption: string;
@@ -7,7 +8,7 @@ interface PostContentProps {
     user: User;
 }
 
-const PostContent = ({ caption, likes, comments, user }: PostContentProps) => {
+const PostContent = forwardRef<HTMLInputElement, PostContentProps>(({ caption, likes, comments, user }, ref) => {
     return (
         <div>
             <div className="text-sm font-semibold text-gray-900 mb-2">{likes.toLocaleString()} likes</div>
@@ -25,6 +26,7 @@ const PostContent = ({ caption, likes, comments, user }: PostContentProps) => {
             </div> */}
             <div className="mt-1 pt-1 border-t border-gray-50">
                 <input
+                    ref={ref}
                     type="text"
                     placeholder="Add a comment..."
                     className="w-full text-sm text-gray-600 placeholder-gray-400 border-none outline-none bg-transparent"
@@ -32,6 +34,8 @@ const PostContent = ({ caption, likes, comments, user }: PostContentProps) => {
             </div>
         </div>
     );
-};
+});
+
+PostContent.displayName = 'PostContent';
 
 export default PostContent;

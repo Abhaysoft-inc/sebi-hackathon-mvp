@@ -1,5 +1,5 @@
-import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
-import { BsBookmark } from 'react-icons/bs';
+import { AiOutlineHeart, AiOutlineComment, AiFillHeart } from 'react-icons/ai';
+import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 import { LuSparkles } from "react-icons/lu";
 
 interface PostActionsProps {
@@ -7,15 +7,40 @@ interface PostActionsProps {
     onAIClick?: () => void;
     isGeneratingAI?: boolean;
     showingAI?: boolean;
+    isLiked?: boolean;
+    isBookmarked?: boolean;
+    onLikeClick?: () => void;
+    onBookmarkClick?: () => void;
+    onCommentClick?: () => void;
 }
 
-const PostActions = ({ likes, onAIClick, isGeneratingAI = false, showingAI = false }: PostActionsProps) => {
+const PostActions = ({
+    likes,
+    onAIClick,
+    isGeneratingAI = false,
+    showingAI = false,
+    isLiked = false,
+    isBookmarked = false,
+    onLikeClick,
+    onBookmarkClick,
+    onCommentClick
+}: PostActionsProps) => {
     return (
         <div className="flex items-center gap-4 mb-3">
-            <button className="flex items-center gap-2 group">
-                <AiOutlineHeart className="w-6 h-6 text-gray-600 group-hover:text-red-500 transition-colors duration-200" />
+            <button
+                className="flex items-center gap-2 group"
+                onClick={onLikeClick}
+            >
+                {isLiked ? (
+                    <AiFillHeart className="w-6 h-6 text-red-500 transition-colors duration-200" />
+                ) : (
+                    <AiOutlineHeart className="w-6 h-6 text-gray-600 group-hover:text-red-500 transition-colors duration-200" />
+                )}
             </button>
-            <button className="group">
+            <button
+                className="group"
+                onClick={onCommentClick}
+            >
                 <AiOutlineComment className="w-6 h-6 text-gray-600 group-hover:text-blue-500 transition-colors duration-200" />
             </button>
             <button
@@ -35,8 +60,15 @@ const PostActions = ({ likes, onAIClick, isGeneratingAI = false, showingAI = fal
                     </div>
                 )}
             </button>
-            <button className="group ml-auto">
-                <BsBookmark className="w-6 h-6 text-gray-600 group-hover:text-yellow-500 transition-colors duration-200" />
+            <button
+                className="group ml-auto"
+                onClick={onBookmarkClick}
+            >
+                {isBookmarked ? (
+                    <BsBookmarkFill className="w-6 h-6 text-yellow-500 transition-colors duration-200" />
+                ) : (
+                    <BsBookmark className="w-6 h-6 text-gray-600 group-hover:text-yellow-500 transition-colors duration-200" />
+                )}
             </button>
         </div>
     );

@@ -28,13 +28,8 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
     // Set initial drawer state based on screen size
     useEffect(() => {
         const handleResize = () => {
-            // On desktop screens (768px and above), open drawer by default
-            // BUT keep it closed on the landing page
-            if (window.innerWidth >= 768 && pathname !== '/') {
-                setDrawerOpen(true);
-            } else {
-                setDrawerOpen(false);
-            }
+            // Keep drawer closed by default on all screen sizes
+            setDrawerOpen(false);
         };
 
         // Set initial state
