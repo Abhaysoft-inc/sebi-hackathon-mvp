@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Calendar, FileText, ArrowLeft, Share2, Download, Bookmark } from 'lucide-react';
+import { Calendar, FileText, ArrowLeft, Share2, Download, Bookmark, Languages } from 'lucide-react';
+import useTextTranslation from '@/hooks/useTextTranslation';
+import { ACTIVE_TRANSLATION_LANGUAGES } from '@/lib/translationLanguages';
 import BottomBar from '@/components/BottomBar';
 import jsPDF from 'jspdf';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
@@ -60,6 +62,10 @@ export default function CircularDetailPage() {
     const [circular, setCircular] = useState<Circular | null>(null);
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
+    const { translate, isLoading: isTranslating, error: translationError } = useTextTranslation();
+    const [targetLang, setTargetLang] = useState('hin_Deva');
+    const [translatedText, setTranslatedText] = useState<string>('');
+    const [isRequestingTranslation, setIsRequestingTranslation] = useState(false);
 
     // Scroll to top when component mounts
     useScrollToTop();
@@ -203,6 +209,10 @@ export default function CircularDetailPage() {
                         </button>
 
                         <div className="flex items-center gap-1 sm:gap-2">
+                            {/* Translate icon retained purely as visual indicator (no toggle now) */}
+                            <div className="p-2 rounded-lg bg-blue-50 text-blue-600" title="Translation enabled below">
+                                <Languages className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </div>
                             <button
                                 onClick={() => setIsBookmarked(!isBookmarked)}
                                 className={`p-2 rounded-lg transition-colors ${isBookmarked
@@ -254,6 +264,65 @@ export default function CircularDetailPage() {
                             {circular.content}
                         </div>
                     </div>
+                </div>
+
+                <div className="mt-6 sm:mt-8 bg-white rounded-lg border border-blue-200 p-4 sm:p-6 lg:p-8 shadow-sm">
+                    <div className="flex flex-col md:flex-row md:items-end gap-4 mb-4">
+                        <div className="w-full md:w-64">
+                            <label className="block text-xs font-medium text-gray-600 mb-1">Target Language</label>
+                            <select
+                                value={targetLang}
+                                onChange={(e) => setTargetLang(e.target.value)}
+                                className="w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            >
+                                {ACTIVE_TRANSLATION_LANGUAGES.map(l => (
+                                    <option key={l.code} value={l.code}>{l.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex gap-2 flex-wrap">
+                            <button
+                                onClick={async () => {
+                                    if (!circular) return;
+                                    setIsRequestingTranslation(true);
+                                    const t = await translate(circular.content, targetLang);
+                                    if (t) setTranslatedText(t);
+                                    setIsRequestingTranslation(false);
+                                }}
+                                disabled={isTranslating || isRequestingTranslation}
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                {isTranslating || isRequestingTranslation ? (
+                                    <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Translating...</span>
+                                ) : (
+                                    <>
+                                        <Languages className="w-4 h-4" />
+                                        Translate
+                                    </>
+                                )}
+                            </button>
+                            {translatedText && (
+                                <button
+                                    onClick={() => setTranslatedText('')}
+                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200"
+                                >
+                                    Clear
+                                </button>
+                            )}
+                        </div>
+                        <div className="text-[10px] text-gray-500 md:ml-auto">HF: facebook/mbart-large-50-many-to-many-mmt</div>
+                    </div>
+                    {translationError && (
+                        <p className="text-sm text-red-600 mb-3">{translationError}</p>
+                    )}
+                    <div className="min-h-[120px] rounded-md border border-dashed border-gray-300 p-3 bg-gray-50 whitespace-pre-wrap text-sm leading-relaxed">
+                        {translatedText
+                            ? translatedText
+                            : (isTranslating || isRequestingTranslation)
+                                ? 'Processing translation...'
+                                : 'Translation will appear here.'}
+                    </div>
+                    <p className="mt-3 text-[10px] text-gray-400">Machine translated via Hugging Face mBART-50. Verify before official use.</p>
                 </div>
 
                 {/* Action Buttons */}
