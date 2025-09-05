@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Calendar, FileText, ArrowLeft, Share2, Download, Bookmark } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
 import jsPDF from 'jspdf';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 interface Circular {
     id: string;
@@ -59,6 +60,9 @@ export default function CircularDetailPage() {
     const [circular, setCircular] = useState<Circular | null>(null);
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
+
+    // Scroll to top when component mounts
+    useScrollToTop();
 
     useEffect(() => {
         const foundCircular = circulars.find(c => c.id === params.id);
@@ -218,8 +222,8 @@ export default function CircularDetailPage() {
                                 onClick={handleDownload}
                                 disabled={isDownloading}
                                 className={`p-2 rounded-lg transition-colors ${isDownloading
-                                        ? 'bg-blue-100 text-blue-600 cursor-not-allowed'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    ? 'bg-blue-100 text-blue-600 cursor-not-allowed'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                     }`}
                             >
                                 {isDownloading ? (

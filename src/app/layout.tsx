@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+'use client';
+
+import { usePathname } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/landing/Footer";
@@ -22,27 +24,39 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "EduFinX",
-  description: "EduFinX – Social learning, regulated creator content, AI insights & gamified financial literacy.",
-  icons: {
-    icon: '/favicon.ico',
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
   const mainContainerStyle = {
     paddingTop: '1.5rem',
     paddingBottom: '2rem',
     minHeight: '100vh',
   };
 
+  // Pages that should NOT have the footer
+  const pagesWithoutFooter = [
+    // Quiz playing pages
+    /^\/quiz\/ranked\/[^\/]+$/,
+    // Add other patterns here if needed
+  ];
+
+  const shouldShowFooter = !pagesWithoutFooter.some(pattern => {
+    if (pattern instanceof RegExp) {
+      return pattern.test(pathname);
+    }
+    return pathname === pattern;
+  });
+
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <title>EduFinX</title>
+        <meta name="description" content="EduFinX – Social learning, regulated creator content, AI insights & gamified financial literacy." />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -56,7 +70,7 @@ export default function RootLayout({
                   {children}
                 </main>
               </div>
-              <Footer />
+              {shouldShowFooter && <Footer />}
               <DevMountPing />
               {/* Global Voice Assistant (Phase 1: UI only) */}
               <VoiceAssistant />

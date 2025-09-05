@@ -45,11 +45,8 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
         // '/', // Landing page - removed to enable hamburger menu
     ];
 
-    // Check if current path is a quiz playing page (dynamic routes like /quiz/ranked/[id])
-    const isQuizPlayingPage = /^\/quiz\/ranked\/[^\/]+$/.test(pathname);
-
     // Check if current path should be excluded
-    const shouldExclude = excludedPages.includes(pathname) || isQuizPlayingPage;
+    const shouldExclude = excludedPages.includes(pathname);
 
     if (shouldExclude) {
         return <>{children}</>;

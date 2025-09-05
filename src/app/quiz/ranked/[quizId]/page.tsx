@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Clock, Users, Trophy, CheckCircle, XCircle, ArrowRight, ArrowLeft, Flag } from 'lucide-react';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 interface Question {
     id: string;
@@ -36,6 +37,9 @@ const QuizPlayPage = () => {
     const [showResults, setShowResults] = useState(false);
     const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
     const [timerInitialized, setTimerInitialized] = useState(false);
+
+    // Scroll to top when component mounts
+    useScrollToTop();
 
     // Mock quiz data - in real app, this would come from API
     const quizData: QuizData = {
@@ -198,7 +202,7 @@ const QuizPlayPage = () => {
 
     if (!quizStarted) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+            <div className="m bg-gray-50 flex items-center justify-center px-4">
                 <div className="max-w-2xl mx-auto w-full">
                     <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 lg:p-8 text-center">
                         <Trophy className="w-12 h-12 sm:w-16 sm:h-16 text-yellow-500 mx-auto mb-4" />
@@ -351,10 +355,10 @@ const QuizPlayPage = () => {
                             </div>
                             <button
                                 onClick={handleCompleteQuiz}
-                                className="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1 sm:space-x-2"
+                                className="bg-red-600 hover:bg-red-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors flex items-center space-x-2 shadow-lg hover:shadow-xl"
                             >
-                                <Flag className="w-3 h-3 sm:w-4 sm:h-4" />
-                                <span>Submit</span>
+                                <Flag className="w-4 h-4 sm:w-5 sm:h-5" />
+                                <span>Submit Quiz</span>
                             </button>
                         </div>
                     </div>
@@ -428,7 +432,7 @@ const QuizPlayPage = () => {
                             <span>Previous</span>
                         </button>
 
-                        <div className="text-xs sm:text-sm text-gray-500 order-first sm:order-none">
+                        <div className="text-xs sm:text-sm text-gray-500 order-first sm:order-none pb-5">
                             {Object.keys(selectedAnswers).length} of {quizData.questions.length} answered
                         </div>
 

@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Clock, Users, Trophy, Calendar, Play, Star, TrendingUp, AlertCircle, Check } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 interface Quiz {
     id: string;
@@ -164,6 +165,9 @@ const QuizCard: React.FC<{ quiz: Quiz; onRegister: (quizId: string) => void }> =
 const RankedQuizPage = () => {
     const [activeTab, setActiveTab] = useState<'all' | 'upcoming' | 'ongoing'>('all');
     const [registeredQuizzes, setRegisteredQuizzes] = useState<Set<string>>(new Set());
+
+    // Scroll to top when component mounts
+    useScrollToTop();
 
     const handleRegister = (quizId: string) => {
         setRegisteredQuizzes(prev => new Set([...prev, quizId]));

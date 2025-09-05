@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Calendar, FileText, Search } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 interface Circular {
     id: string;
@@ -168,6 +169,9 @@ const circulars: Circular[] = [
 export default function CircularsPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedMonth, setSelectedMonth] = useState('');
+
+    // Scroll to top when component mounts
+    useScrollToTop();
 
     const filteredCirculars = circulars.filter(circular => {
         const matchesSearch = circular.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
